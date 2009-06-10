@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.1,v 1.2 2009/06/10 19:15:55 tg Exp $
+.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin.1,v 1.1 2009/06/10 19:15:55 tg Exp $
 .\"-
 .\" Copyright © 2009
 .\"	Thorsten Glaser <tg@mirbsd.org>
@@ -48,85 +48,55 @@
 ..
 .\"-
 .Dd $Mdocdate: June 10 2009 $
-.Dt KWALLETCLI 1
+.Dt KWALLETCLI_GETPIN 1
 .Os
 .Sh NAME
-.Nm kwalletcli
-.Nd command line interface to the KDE Wallet
+.Nm kwalletcli_getpin
+.Nd command line interface to pinentry
 .Sh SYNOPSIS
 .Nm
-.Fl hV
-.Nm
-.Fl f Ar folder
-.Fl e Ar entry
-.Op Fl P | p Ar password
+.Op Fl E | e Ar errortext
+.Op Fl p Ar prompt
+.Op Fl t Ar desctext
 .Sh DESCRIPTION
 The
 .Nm
-utility is a command line interface to KWallet.
-It will only work if KDE is running (DCOP).
-.Nm
-can be used to get password entries from the Wallet,
-or to write them there.
+utility is a shell wrapper speaking to
+.Nm pinentry
+using the Aegypten protocol.
+It will ask the user for a password and print it,
+without any trailing newline, to standard output.
 .Pp
 The options are as follows:
-.Bl -tag -width xPxpassword
-.It Fl e Ar entry
-Define the key
-.Pq Ar entry
-to use when accessing the Wallet.
-Mandatory.
-.It Fl f Ar folder
-Set the
-.Ar folder
-to use when accessing the Wallet.
-Mandatory.
-.It Fl h
-Display the usage.
-.It Fl P
-Read the password to write from standard input.
-.It Fl P Ar password
-Write
-.Ar password
-into the designated location in the Wallet.
-.It Fl V
-Display the version of
-.Nm
-and its usage.
+.Bl -tag -width xPxdesctxt
+.It Fl E
+Unset a previously set error text.
+.It Fl E Ar errtxt
+Set the error text to
+.Ar errtxt ,
+displaying a dialogue box with a red X icon indicating
+that this is a retry question.
+.It Fl p Ar prompt
+Set the small descriptive text shown in front of the input field
+.Pq Dq the Prompt
+to
+.Ar prompt .
+.It Fl t Ar desctxt
+Set the descriptive text
+.Pq the input challenge
+to
+.Ar desctxt .
 .El
-.Pp
-Default mode of operation, that is, unless
-.Fl P
-or
-.Fl p
-are used, is to read the password from the Wallet
-and print it to standard output as-is, without any
-trailing newline.
 .Pp
 All input and output is assumed to be in UTF-8.
 .Sh RETURN VALUES
 The
 .Nm
-utility exits 0 on success or >0 if an error occurred:
-.Bl -tag -width xxx
-.It 1
-The entry specified cannot be found (read access).
-.It 2
-The usage was shown.
-.It 3
-The Wallet could not be opened.
-May be a missing DCOP connection.
-.It 4
-The folder specified cannot be found (read access).
-.It 5
-The folder specified cannot be opened.
-.It 6
-The value to the key specified could not be retrieved.
-.It 8
-An error occured trying to write the value.
-.El
+utility exits 0 on success, 1 if the password input
+was cancelled by the user, or >1 if an error occurred.
 .Sh SEE ALSO
-.Xr kwalletcli_getpin 1
+.Xr kwalletcli 1 ,
+.Xr pinentry 1
 .Sh AUTHORS
 .Nm
 was written by
