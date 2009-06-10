@@ -1,5 +1,5 @@
 #!/usr/bin/env mksh
-# $MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet,v 1.1 2009/06/10 19:08:58 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet,v 1.2 2009/06/10 19:20:04 tg Exp $
 #-
 # Copyright © 2009
 #	Thorsten Glaser <tg@mirbsd.org>
@@ -33,5 +33,6 @@ if [[ -n $PINENTRY_KWALLET ]]; then
 	exit 1
 fi
 
+PINENTRY_KWALLET=set "${PINENTRY:-pinentry}" |&
 print OK ready to listen to your demands
 …
