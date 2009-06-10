@@ -1,7 +1,7 @@
-# $MirOS: contrib/hosted/tg/code/kwalletcli/GNUmakefile,v 1.2 2009/06/10 18:32:27 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/BSDmakefile,v 1.1 2009/06/10 18:32:27 tg Exp $
 #-
 # Copyright © 2009
-#	Thorsten Glaser <t.glaser@tarent.de>
+#	Thorsten Glaser <tg@mirbsd.org>
 #
 # Provided that these terms and disclaimer and all copyright notices
 # are retained or reproduced in an accompanying document, permission
@@ -18,41 +18,18 @@
 # damage or existence of a defect, except proven that it results out
 # of said person’s immediate fault when using the work as intended.
 
-SCRIPTS=	kwalletcli_getpin #kwalletaskpass
-BINDIR=		/usr/bin
-
-BINMODE?=	755
-INSTALL_STRIP?=	-s
-
 PROG=		kwalletcli
 SRCS=		main.c kwif.cc
-OBJS=		main.o kwif.o
+NOMAN=		Yes	# for now
 
-CPPFLAGS+=	-I/usr/include/qt3 -I/usr/include/kde
+KDE_INCS?=	-I/usr/include/qt3 -I/usr/include/kde
+CPPFLAGS+=	${KDE_INCS}
 LDADD+=		-lkwalletclient
 
-CC?=		gcc
-CXX?=		g++
+afterinstall:
+.for _i in kwalletcli_getpin
+	${INSTALL} ${INSTALL_COPY} -o ${BINOWN} -g ${BINGRP} -m ${BINMODE} \
+	    ${.CURDIR}/${_i} ${DESTDIR}${BINDIR}/
+.endfor
 
-CFLAGS?=	-O2
-CXXFLAGS?=	${CFLAGS}
-
-all: ${PROG}
-
-install:
-	install -c ${INSTALL_STRIP} -m ${BINMODE} \
-	    ${PROG} ${DESTDIR}${BINDIR}/
-	install -c -m ${BINMODE} \
-	    ${SCRIPTS} ${DESTDIR}${BINDIR}/
-
-clean:
-	-rm -f ${OBJS} ${PROG}
-
-${PROG}: ${OBJS} ${DPADD}
-	${CXX} ${LDFLAGS} -o $@ ${OBJS} ${LDADD}
-
-.c.o:
-	${CC} ${CPPFLAGS} ${CFLAGS} -c -o $@ $<
-
-.cc.o:
-	${CXX} ${CPPFLAGS} ${CXXFLAGS} -c -o $@ $<
+.include <bsd.prog.mk>
