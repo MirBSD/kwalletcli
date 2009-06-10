@@ -18,7 +18,6 @@
  * of said person’s immediate fault when using the work as intended.
  */
 
-#define _GNU_SOURCE
 #include <errno.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -28,7 +27,7 @@
 
 extern const char __rcsid_kwif_cc[];
 const char __rcsid_main_c[] =
-    "$MirOS: contrib/hosted/tg/code/kwalletcli/main.c,v 1.1 2009/06/10 18:28:32 tg Exp $";
+    "$MirOS: contrib/hosted/tg/code/kwalletcli/main.c,v 1.2 2009/06/10 18:36:42 tg Exp $";
 
 int
 main(int argc, char *argv[])
