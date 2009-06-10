@@ -1,4 +1,4 @@
-/* $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.h,v 1.1 2009/06/10 18:28:31 tg Exp $ */
+/* $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.h,v 1.2 2009/06/10 18:59:45 tg Exp $ */
 
 /*-
  * Copyright (c) 2009
@@ -31,12 +31,12 @@ int kw_io(const char *, const char *, const char **, const char *);
 
 /* these are (except abort/usage and OK) the same as exit codes */
 #define KWE_OK_GET	0
-#define KWE_ERRENTRY	1
+#define KWE_NOENTRY	1
 #define KWE_ABORT	2	/* errorlevel 2 == usage */
 #define KWE_NOWALLET	3
 #define KWE_NOFOLDER	4
 #define KWE_ERRFOLDER	5
-#define KWE_NOENTRY	6
+#define KWE_ERRENTRY	6
 #define KWE_OK_SET	7	/* uses errorlevel 0 */
 #define KWE_ERR_SET	8
 
