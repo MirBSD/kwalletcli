@@ -1,0 +1,122 @@
+#!/usr/bin/env mksh
+# $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin,v 1.1 2009/06/10 18:28:32 tg Exp $
+#-
+# Copyright © 2009
+#	Thorsten Glaser <t.glaser@tarent.de>
+#
+# Provided that these terms and disclaimer and all copyright notices
+# are retained or reproduced in an accompanying document, permission
+# is granted to deal in this work without restriction, including un‐
+# limited rights to use, publicly perform, distribute, sell, modify,
+# merge, give away, or sublicence.
+#
+# This work is provided “AS IS” and WITHOUT WARRANTY of any kind, to
+# the utmost extent permitted by applicable law, neither express nor
+# implied; without malicious intent or gross negligence. In no event
+# may a licensor, author or contributor be held liable for indirect,
+# direct, other damage, loss, or other issues arising in any way out
+# of dealing in the work, even if advised of the possibility of such
+# damage or existence of a defect, except proven that it results out
+# of said person’s immediate fault when using the work as intended.
+
+unset LC_ALL LANGUAGE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES \
+    LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT LC_IDENTIFICATION
+export LANG=C LC_CTYPE=en_US.UTF-8
+set -U
+
+function die {
+	local rv=$1
+
+	shift
+	print -u2 -r -- "$@"
+	exit $rv
+}
+
+function checkline {
+	local res
+
+	print -pr -- "$@"
+	read -p res || die 3 pinentry died
+	[[ $res = OK@(| *) ]] || die 4 "got '$res' for '$*'"
+}
+
+function toutf8 {
+	local intext="$*" outtext=''
+	typeset -i i=0 n=${#intext}
+	typeset -i1 c
+	typeset -Uui16 -Z5 x
+
+	while (( i < n )); do
+		c=1#${intext:(i++):1}
+		if (( (c & 0xFF80) == 0xEF80 )); then
+			(( c &= 0xFF ))
+		fi
+		if (( c < 32 || c == 1#% )); then
+			let x=c
+			outtext=${outtext}%${x#16#}
+		elif (( c > 0x7E && c < 0xA0 )); then
+			outtext=${outtext}�
+		else
+			outtext=${outtext}${c#1#}
+		fi
+	done
+
+	print -nr -- "$outtext"
+}
+
+function usage {
+	print -u2 "Usage: kwalletcli_getpin [-E | -e errortext]" \
+	    "[-p prompt] [-t desctext]"
+	print -u2 "Returns: 0=ok (pw on stdout), 1=cancel, 2+=error"
+	exit 2
+}
+
+
+asktext='Hast Du das Paßwort?'
+askprompt='Code:'
+askerror=''
+
+while getopts 'Ee:hp:t:' ch; do
+	case $ch {
+	(E)	askerror='' ;;
+	(e)	askerror=$OPTARG ;;
+	(p)	askprompt=$OPTARG ;;
+	(t)	asktext=$OPTARG ;;
+	(*)	usage ;;
+	}
+done
+shift $((OPTIND - 1))
+(( $# )) && usage
+
+"${PINENTRY:-pinentry}" |&
+read -p res || die 3 pinentry died
+[[ $res = OK@(| *) ]] || die 4 "got '$res' for '$*'"
+
+if [[ -z $DISPLAY ]]; then
+	tty=$(tty)
+	[[ -n $tty ]] && checkline "OPTION ttyname=$(tty)"
+	checkline "OPTION ttytype=${TERM:-vt100}"
+fi
+
+checkline "OPTION lc-ctype=$LC_CTYPE"
+
+[[ -n $asktext ]] && checkline "SETDESC $(toutf8 "$asktext")"
+[[ -n $askprompt ]] && checkline "SETPROMPT $(toutf8 "$askprompt")"
+[[ -n $askerror ]] && checkline "SETERROR $(toutf8 "$askerror")"
+
+print -p GETPIN
+read -p res || die 3 pinentry died
+if [[ $res = @(D )* ]]; then
+	pass=${res#D }
+	read -p res || die 3 pinentry died
+else
+	pass=
+fi
+if [[ $res = OK@(| *) ]]; then
+	rv=0
+	print -nr -- "$pass"
+else
+	rv=1
+fi
+exec 3>&p; exec 3>&-
+exit $rv
