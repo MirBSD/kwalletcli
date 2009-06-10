@@ -1,5 +1,3 @@
-/* $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.h,v 1.2 2009/06/10 18:59:45 tg Exp $ */
-
 /*-
  * Copyright (c) 2009
  *	Thorsten Glaser <tg@mirbsd.org>
@@ -21,7 +19,8 @@
  */
 
 #ifndef KWALLETCLI_H
-#define KWALLETCLI_H
+#define KWALLETCLI_H	"$MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.h,v 1.3 2009/06/10 19:00:42 tg Exp $"
+
 
 #ifdef __cplusplus
 extern "C" {

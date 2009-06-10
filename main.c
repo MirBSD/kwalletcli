@@ -27,7 +27,7 @@
 
 extern const char __rcsid_kwif_cc[];
 const char __rcsid_main_c[] =
-    "$MirOS: contrib/hosted/tg/code/kwalletcli/main.c,v 1.2 2009/06/10 18:36:42 tg Exp $";
+    "$MirOS: contrib/hosted/tg/code/kwalletcli/main.c,v 1.3 2009/06/10 19:00:42 tg Exp $";
 
 int
 main(int argc, char *argv[])
@@ -69,8 +69,8 @@ main(int argc, char *argv[])
 			kw_pass = optarg;
 			break;
 		case 'V':
-			fprintf(stderr, "%s\n%s\n", __rcsid_main_c,
-			    __rcsid_kwif_cc);
+			fprintf(stderr, "%s\n%s\n%s\n", __rcsid_main_c,
+			    __rcsid_kwif_cc, KWALLETCLI_H);
 		case 'h':
 		default:
  usage:
@@ -82,7 +82,8 @@ main(int argc, char *argv[])
 	if ((argc - optind) || !kw_folder || !kw_entry)
 		goto usage;
 
-	if (asprintf(&vers, "%s %s", __rcsid_main_c, __rcsid_kwif_cc) == -1)
+	if (asprintf(&vers, "%s %s %s", __rcsid_main_c, __rcsid_kwif_cc,
+	    KWALLETCLI_H) == -1)
 		vers = NULL;
 
 	rv = kw_io(kw_folder, kw_entry, &kw_pass, vers ? vers : "");
