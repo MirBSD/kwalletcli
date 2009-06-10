@@ -1,4 +1,4 @@
-# $MirOS: contrib/hosted/tg/code/kwalletcli/BSDmakefile,v 1.2 2009/06/10 18:35:27 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/BSDmakefile,v 1.3 2009/06/10 19:02:30 tg Exp $
 #-
 # Copyright © 2009
 #	Thorsten Glaser <tg@mirbsd.org>
@@ -20,7 +20,6 @@
 
 PROG=		kwalletcli
 SRCS=		main.c kwif.cc
-NOMAN=		Yes	# for now
 
 KDE_INCS?=	-I/usr/include/qt3 -I/usr/include/kde
 CPPFLAGS+=	${KDE_INCS} -D_GNU_SOURCE

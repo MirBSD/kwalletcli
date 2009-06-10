@@ -1,0 +1,133 @@
+.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.1,v 1.1 2009/06/10 19:02:30 tg Exp $
+.\"-
+.\" Copyright © 2009
+.\"	Thorsten Glaser <tg@mirbsd.org>
+.\"
+.\" Provided that these terms and disclaimer and all copyright notices
+.\" are retained or reproduced in an accompanying document, permission
+.\" is granted to deal in this work without restriction, including un‐
+.\" limited rights to use, publicly perform, distribute, sell, modify,
+.\" merge, give away, or sublicence.
+.\"
+.\" This work is provided “AS IS” and WITHOUT WARRANTY of any kind, to
+.\" the utmost extent permitted by applicable law, neither express nor
+.\" implied; without malicious intent or gross negligence. In no event
+.\" may a licensor, author or contributor be held liable for indirect,
+.\" direct, other damage, loss, or other issues arising in any way out
+.\" of dealing in the work, even if advised of the possibility of such
+.\" damage or existence of a defect, except proven that it results out
+.\" of said person’s immediate fault when using the work as intended.
+.\"-
+.\" Try to make GNU groff and AT&T nroff more compatible
+.\" * ` generates ‘ in groff, so use \`
+.\" * ' generates ’ in groff, \' generates ´, so use \*(aq
+.\" * - generates ‐ in groff, \- generates −, fixed in tmac/mdoc/doc-groff
+.\"   thus use - for hyphens and \- for minus signs and option dashes
+.\" * ~ is size-reduced and placed atop in groff, so use \*(TI
+.\" * ^ is size-reduced and placed atop in groff, so use \*(ha
+.\" * \(en does not work in nroff, so use \*(en
+.ie \n(.g \{\
+.	ds aq \(aq
+.	ds TI \(ti
+.	ds ha \(ha
+.	ds en \(en
+.\}
+.el \{\
+.	ds aq '
+.	ds TI ~
+.	ds ha ^
+.	ds en \(em
+.\}
+.\" Implement .Dd with the Mdocdate RCS keyword
+.rn Dd xD
+.de Dd
+.ie \\$1$Mdocdate: \{\
+.	xD \\$2 \\$3, \\$4
+.\}
+.el .xD \\$1 \\$2 \\$3 \\$4 \\$5 \\$6 \\$7 \\$8
+..
+.\"-
+.Dd $Mdocdate: June 10 2009 $
+.Dt KWALLETCLI 1
+.Os
+.Sh NAME
+.Nm kwalletcli
+.Nd command line interface to the KDE Wallet
+.Sh SYNOPSIS
+.Nm
+.Fl hV
+.Nm
+.Fl f Ar folder
+.Fl e Ar entry
+.Op Fl P | p Ar password
+.Sh DESCRIPTIOn
+The
+.Nm
+utility is a command line interface to KWallet.
+It will only work if KDE is running (DCOP).
+.Nm
+can be used to get password entries from the Wallet,
+or to write them there.
+.Pp
+The options are as follows:
+.Bl -tag -width xPxpassword
+.It Fl e Ar entry
+Define the key
+.Pq Ar entry
+to use when accessing the Wallet.
+Mandatory.
+.It Fl f Ar folder
+Set the
+.Ar folder
+to use when accessing the Wallet.
+Mandatory.
+.It Fl h
+Display the usage.
+.It Fl P
+Read the password to write from standard input.
+.It Fl P Ar password
+Write
+.Ar password
+into the designated location in the Wallet.
+.It Fl V
+Display the version of
+.Nm
+and its usage.
+.El
+.Pp
+Default mode of operation, that is, unless
+.Fl P
+or
+.Fl p
+are used, is to read the password from the Wallet
+and print it to standard output as-is, without any
+trailing newline.
+.Pp
+All input and output is assumed to be in UTF-8.
+.Sh RETURN VALUES
+The
+.Nm
+utility exits 0 on success or >0 if an error occurred:
+.Bl -tag -width xxx
+.It 1
+The entry specified cannot be found (read access).
+.It 2
+The usage was shown.
+.It 3
+The Wallet could not be opened.
+May be a missing DCOP connection.
+.It 4
+The folder specified cannot be found (read access).
+.It 5
+The folder specified cannot be opened.
+.It 6
+The value to the key specified could not be retrieved.
+.It 8
+An error occured trying to write the value.
+.El
+.\"Sh SEE ALSO
+.Sh AUTHORS
+.Nm
+was written by
+.An Thorsten Glaser Aq tg@mirbsd.org
+mostly for tarent GmbH.
