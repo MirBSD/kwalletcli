@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin.1,v 1.1 2009/06/10 19:15:55 tg Exp $
+.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin.1,v 1.2 2009/07/08 11:01:52 tg Exp $
 .\"-
 .\" Copyright © 2009
 .\"	Thorsten Glaser <tg@mirbsd.org>
@@ -47,7 +47,7 @@
 .el .xD \\$1 \\$2 \\$3 \\$4 \\$5 \\$6 \\$7 \\$8
 ..
 .\"-
-.Dd $Mdocdate: June 10 2009 $
+.Dd $Mdocdate: July 8 2009 $
 .Dt KWALLETCLI_GETPIN 1
 .Os
 .Sh NAME
@@ -94,9 +94,30 @@ The
 .Nm
 utility exits 0 on success, 1 if the password input
 was cancelled by the user, or >1 if an error occurred.
+.Sh ENVIRONMENT
+.Bl -tag -width PINENTRY
+.It Ev DISPLAY
+If not set, pass the current terminal, as determined by
+.Xr tty 1 ,
+and terminal type to
+.Nm pinentry .
+.It Ev PINENTRY
+The
+.Nm pinentry
+programme to use.
+Default:
+.Dq pinentry
+.It Ev TERM
+Terminal type of the current tty.
+Default:
+.Dq vt100
+.El
 .Sh SEE ALSO
 .Xr kwalletcli 1 ,
-.Xr pinentry 1
+.Xr pinentry 1 ,
+.Xr stty 1 ,
+.Xr tset 1 ,
+.Xr tty 1
 .Sh AUTHORS
 .Nm
 was written by
