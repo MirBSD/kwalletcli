@@ -1,5 +1,5 @@
 #!/usr/bin/env mksh
-# $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin,v 1.5 2009/07/08 13:55:38 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin,v 1.6 2009/07/08 14:52:29 tg Exp $
 #-
 # Copyright © 2009
 #	Thorsten Glaser <t.glaser@tarent.de>
@@ -19,9 +19,10 @@
 # damage or existence of a defect, except proven that it results out
 # of said person’s immediate fault when using the work as intended.
 
-unset LC_ALL LANGUAGE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES \
+unset LC_ALL LANGUAGE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY \
     LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT LC_IDENTIFICATION
-export LANG=C LC_CTYPE=en_US.UTF-8
+[[ -z $LC_CTYPE ]] && LC_CTYPE=en_US.UTF-8
+export LANG=C LC_CTYPE LC_MESSAGES GPG_TERM GPG_TTY
 set -U
 
 function die {
@@ -90,17 +91,22 @@ done
 shift $((OPTIND - 1))
 (( $# )) && usage
 
-"${PINENTRY:-pinentry}" |&
+set -A pe_args
+if [[ -n $DISPLAY ]]; then
+	pe_args[${#pe_args[*]}]=--display
+	pe_args[${#pe_args[*]}]=$DISPLAY
+fi
+
+"${PINENTRY:-pinentry}" "${pe_args[@]}" |&
 read -p res || die 3 pinentry died
 [[ $res = OK@(| *) ]] || die 4 "got '$res' for '$*'"
 
-if [[ -z $DISPLAY ]]; then
-	[[ -n $GPG_TTY ]] || export GPG_TTY=$(tty)
-	[[ -n $GPG_TTY ]] && checkline "OPTION ttyname=$GPG_TTY"
-	checkline "OPTION ttytype=${TERM:-vt100}"
-fi
-
-checkline "OPTION lc-ctype=$LC_CTYPE"
+[[ -z $DISPLAY && -z $GPG_TTY ]] && GPG_TTY=$(tty)
+[[ -z $GPG_TERM ]] && GPG_TERM=${TERM:-vt100}
+[[ -z $GPG_TTY ]] || checkline "OPTION ttyname=$GPG_TTY"
+[[ -z $GPG_TERM ]] || checkline "OPTION ttytype=$GPG_TERM"
+[[ -z $LC_CTYPE ]] || checkline "OPTION lc-ctype=$LC_CTYPE"
+[[ -z $LC_MESSAGES ]] || checkline "OPTION lc-messages=$LC_MESSAGES"
 
 [[ -n $asktext ]] && checkline "SETDESC $(toutf8 "$asktext")"
 [[ -n $askprompt ]] && checkline "SETPROMPT $(toutf8 "$askprompt")"
