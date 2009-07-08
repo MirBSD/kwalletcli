@@ -1,4 +1,4 @@
-# $MirOS: contrib/hosted/tg/code/kwalletcli/BSDmakefile,v 1.5 2009/06/10 19:18:23 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/BSDmakefile,v 1.6 2009/07/08 12:34:19 tg Exp $
 #-
 # Copyright © 2009
 #	Thorsten Glaser <tg@mirbsd.org>
@@ -20,15 +20,15 @@
 
 PROG=		kwalletcli
 SRCS=		main.c kwif.cc
-MAN=		kwalletcli.1 kwalletcli_getpin.1
-#		kwalletaskpass.1 pinentry-kwallet.1
+SCRIPTS=	kwalletaskpass kwalletcli_getpin # pinentry-kwallet
+MAN=		${PROG}.1 ${SCRIPTS:=.1}
 
 KDE_INCS?=	-I/usr/include/qt3 -I/usr/include/kde
 CPPFLAGS+=	${KDE_INCS} -D_GNU_SOURCE
 LDADD+=		-lkwalletclient
 
 afterinstall:
-.for _i in kwalletcli_getpin # kwalletaskpass pinentry-kwallet
+.for _i in ${SCRIPTS}
 	${INSTALL} ${INSTALL_COPY} -o ${BINOWN} -g ${BINGRP} -m ${BINMODE} \
 	    ${.CURDIR}/${_i} ${DESTDIR}${BINDIR}/
 .endfor

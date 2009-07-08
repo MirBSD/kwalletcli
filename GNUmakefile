@@ -1,4 +1,4 @@
-# $MirOS: contrib/hosted/tg/code/kwalletcli/GNUmakefile,v 1.3 2009/06/10 18:36:42 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/GNUmakefile,v 1.4 2009/07/08 12:34:20 tg Exp $
 #-
 # Copyright © 2009
 #	Thorsten Glaser <t.glaser@tarent.de>
@@ -18,7 +18,7 @@
 # damage or existence of a defect, except proven that it results out
 # of said person’s immediate fault when using the work as intended.
 
-SCRIPTS=	kwalletcli_getpin #kwalletaskpass
+SCRIPTS=	kwalletaskpass kwalletcli_getpin
 BINDIR=		/usr/bin
 
 BINMODE?=	755
