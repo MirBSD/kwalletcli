@@ -1,5 +1,5 @@
 #!/usr/bin/env mksh
-# $MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet,v 1.2 2009/06/10 19:20:04 tg Exp $
+rcsid='$MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet,v 1.3 2009/07/08 15:09:52 tg Exp $'
 #-
 # Copyright © 2009
 #	Thorsten Glaser <tg@mirbsd.org>
@@ -24,15 +24,226 @@ unset LC_ALL LANGUAGE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES \
 export LANG=C LC_CTYPE=en_US.UTF-8
 set -U
 
-exit 255	#XXX incomplete
-
 if [[ -n $PINENTRY_KWALLET ]]; then
+	print ERR 7 trying to call me recursively
 	while read line; do
-		print ERR trying to call me recursively
+		print ERR 7 trying to call me recursively
 	done
 	exit 1
 fi
 
-PINENTRY_KWALLET=set "${PINENTRY:-pinentry}" |&
+set -A args
+last=
+for arg in "$@"; do
+	if [[ $last = --display ]]; then
+		v=DISPLAY
+		last=specvar
+	elif [[ $last = --ttyname ]]; then
+		v=GPG_TTY
+		last=specvar
+	elif [[ $last = --ttytype ]]; then
+		v=GPG_TERM
+		last=specvar
+	elif [[ $last = --lc-type ]]; then
+		v=LC_CTYPE
+		last=specvar
+	elif [[ $last = --lc-messages ]]; then
+		v=LC_MESSAGES
+		last=specvar
+	fi
+	if [[ $last = specvar ]]; then
+		eval $v=\$arg
+		eval export $v
+		last=addone
+	fi
+	if [[ $last = addone ]]; then
+		args[${#args[*]}]=$arg
+		last=
+		continue
+	fi
+	last=
+	if [[ $arg = @(-V|--version) ]]; then
+		print -r -- "$rcsid"
+		exit 0
+	elif [[ $arg = @(-h|--help) ]]; then
+		print "Usage: pinentry-kwallet [options]"
+		exit 0
+	elif [[ $arg = \
+	    @(-@(d|e|g)|--@(debug|enhanced|no-global-grab)) ]]; then
+		args[${#args[*]}]=$arg
+	elif [[ $arg = \
+	    --@(display|ttyname|ttytype|lc-type|lc-messages) ]]; then
+		args[${#args[*]}]=$arg
+		last=$arg
+	elif [[ $arg = --parent-wid ]]; then
+		args[${#args[*]}]=$arg
+		last=addone
+	else
+		print -u2 "warning: unknown argument '$arg'"
+		args[${#args[*]}]=$arg
+	fi
+done
+
+PINENTRY_KWALLET=set "${PINENTRY:-pinentry}" "${args[@]}" |&
+IFS= read -pr resp || resp='ERR 14 no coprocess'
+if [[ $resp = OK@(| *) ]]; then
+	have_sub=1
+else
+	have_sub=0
+	exec 3>&p; exec 3>&-
+fi
 print OK ready to listen to your demands
-…
+
+x_dsctxt=
+x_prompt=
+x_errtxt=
+
+function getit {
+	local type=$1 key=〈${x_prompt}〉$x_dsctxt pw rv tw=0 d errcnt
+
+	copyline=0
+	# the errcnt handling is a little tricky, because GnuPG v2 does
+	# not reuse the pinentry session (suckers, unable to... *rant*)
+	if pw=$(kwalletcli -f pinentry-kwallet -e "$type-e-$key" \
+	    2>/dev/null); then
+		set -A errcnt -- $pw
+		d=$(date -u +'%s')
+		(( errcnt[0] < (d - 15) )) && errcnt[1]=0
+	fi
+	[[ -z $x_errtxt ]] || (( errcnt[1]++ ))
+	if (( errcnt[1] )); then
+		errcnt[0]=${d:-$(date -u +'%s')}
+		kwalletcli -f pinentry-kwallet -e "$type-e-$key" \
+		    -p "${errcnt[*]}"
+	fi
+	if (( errcnt[1] < 2 )); then
+		pw=$(kwalletcli -f pinentry-kwallet -e "$type-v-$key" \
+		    2>/dev/null)
+		rv=$?
+		case $type:$rv {
+		(bool:0)
+			if [[ $pw = \
+			    @(1|-1|[Tt][Rr][Uu][Ee]|[Yy][Ee][Ss]) ]]; then
+				print OK
+				return
+			elif [[ $pw = \
+			    @(0|[Ff][Aa][Ll][Ss][Ee]|[Nn][Oo]) ]]; then
+				print ERR 128 not confirmed
+				return
+			fi
+			;;
+		(pass:0)
+			[[ -n $pw ]] && print -r "D $pw"
+			print OK
+			return
+			;;
+		}
+	fi
+	if (( !have_sub )); then
+		print ERR 14 no coprocess
+		return
+	fi
+	if [[ $type = bool ]]; then
+		print -p CONFIRM
+		IFS= read -pr resp
+		case $resp {
+		(OK@(| *))
+			pw=1
+			tw=1
+			;;
+		(ERR\ 128@(| *))
+			pw=0
+			tw=1
+			;;
+		}
+	else
+		print -p GETPIN
+		IFS= read -pr resp
+		pw=
+		if [[ $resp = @(D )* ]]; then
+			pw=${resp#D }
+			IFS= read -pr resp
+		fi
+		[[ $resp = OK@(| *) ]] && tw=1
+	fi
+	(( tw )) && kwalletcli_getpin -bt "Do you want to store your response for description
+'$x_dsctxt',
+prompt '$x_prompt' in the KDE Wallet?" && \
+	    kwalletcli -f pinentry-kwallet -e "$type-v-$key" -p "$pw"
+	[[ $type = pass ]] && [[ -n $pw ]] && print -r "D $pw"
+	print -r -- "$resp"
+}
+
+while IFS= read -r line; do
+	copyline=1
+	case $line {
+	(SETDESC)
+		x_dsctxt=
+		;;
+	(SETDESC\ *)
+		x_dsctxt=${line#SETDESC }
+		;;
+	(SETPROMPT)
+		x_prompt=
+		;;
+	(SETPROMPT\ *)
+		x_prompt=${line#SETPROMPT }
+		;;
+	(SETOK*|SETCANCEL*)
+		;;
+	(SETERROR)
+		x_errtxt=
+		;;
+	(SETERROR\ *)
+		x_errtxt=${line#SETERROR }
+		;;
+	(SETQUALITYBAR*)
+		;;
+	(GETPIN)
+		getit pass
+		;;
+	(CONFIRM)
+		getit bool
+		;;
+	(MESSAGE|CONFIRM\ --one-button)
+		;;
+	(OPTION\ ttyname=*)
+		GPG_TTY=${line#*=}
+		export GPG_TTY
+		;;
+	(OPTION\ ttytype=*)
+		GPG_TERM=${line#*=}
+		export GPG_TERM
+		;;
+	(OPTION\ lc-ctype=*)
+		LC_CTYPE=${line#*=}
+		export LC_CTYPE
+		;;
+	(OPTION\ lc-messages=*)
+		LC_MESSAGES=${line#*=}
+		export LC_MESSAGES
+		;;
+	(OPTION*)
+		;;
+	(CONFIRM\ *)
+		print -ru2 "warning: unknown CONFIRM option ${line#CONFIRM }"
+		;;
+	(BYE@(| *))
+		# undocumented, but used by GnuPG v2
+		print OK
+		break
+		;;
+	(*)
+		print -ru2 "warning: unknown line '$line'"
+		;;
+	}
+	(( copyline )) && if (( have_sub )); then
+		print -pr -- "$line"
+		IFS= read -pr resp
+		print -r -- "$resp"
+	else
+		print OK
+	fi
+done
+exec 3>&p; exec 3>&-
+exit 0

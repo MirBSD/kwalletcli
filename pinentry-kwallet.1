@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet.1,v 1.1 2009/06/10 19:18:23 tg Exp $
+.\" $MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet.1,v 1.2 2009/07/08 15:09:52 tg Exp $
 .\"-
 .\" Copyright © 2009
 .\"	Thorsten Glaser <tg@mirbsd.org>
@@ -47,8 +47,88 @@
 .el .xD \\$1 \\$2 \\$3 \\$4 \\$5 \\$6 \\$7 \\$8
 ..
 .\"-
-.Dd $Mdocdate: June 10 2009 $
+.Dd $Mdocdate: July 8 2009 $
 .Dt PINENTRY-KWALLET 1
 .Os
 .Sh NAME
 .Nm pinentry-kwallet
+.Nd kwallet-based pass-phrase dialog for use with GnuPG
+.Sh SYNOPSIS
+.Nm
+.Op Ar options
+.Sh DESCRIPTION
+.Nm
+is a kwallet- and pinentry-based pass-phrase dialog for use with GnuPG.
+It is intended to be called from the
+.Xr gpg-agent 1
+daemon and not invoked directly.
+.Pp
+.Nm
+replaces the regular
+.Ic pinentry\-program
+stanza set in
+.Pa ~/.gnupg/gpg-agent.conf
+and looks up the passphrases requested in the KWallet first, falling back to
+.Nm pinentry
+only if not found.
+The user is given the option to store it in the KWallet afterwards.
+.Pp
+.Nm
+talks the regular Aegypten protocol, as well as the undocumented
+.Ic BYE
+command, on stdio; all commands, even unknown ones, are passed through to a
+.Nm pinentry
+co-process during run-time, even if the latter is never used.
+It accepts the same options as
+.Nm pinentry ,
+even unknown ones, because it is designed to plug in.
+.Pp
+.Nm
+attempts sophisticated error handling:
+if an error dialogue is displayed, an internal counter is increased.
+If the counter reaches 2, the value stored in the KWallet is ignored,
+and the user is asked anew.
+The counter is stored in the KWallet, which is suboptimal but necessary,
+because
+.Xr gpg2 1
+does not re-use the Aegypten sessions, instead spawning a new
+.Nm
+each time a passphrase is required (rather stupid).
+Error counters are valid for 15 seconds since their last increasement.
+.Sh RETURN VALUES
+.Nm
+exits 1 if it is called recursively, 0 if help or version
+information are requested, and return codes do not matter
+in any other cases because errors are signalled in-band.
+It will exit 0 after the Aegypten session is terminated.
+.Sh ENVIRONMENT
+.Bl -tag -width PINENTRY
+.It Ev DISPLAY
+The X11 display to use for child processes.
+.It Ev GPG_TERM
+Terminal type of the current tty.
+.It Ev GPG_TTY
+The current terminal.
+.It Ev PINENTRY
+The
+.Nm pinentry
+programme to use.
+Default:
+.Dq pinentry
+.El
+.Sh SEE ALSO
+.Xr date 1 ,
+.Xr gpg-agent 1 ,
+.Xr gpg2 1 ,
+.Xr kwalletcli 1 ,
+.Xr kwalletcli_getpin 1 ,
+.Xr mksh 1 ,
+.Xr pinentry-curses 1 ,
+.Xr pinentry-gtk-2 1 ,
+.Xr pinentry-qt 1 ,
+.Xr pinentry-x11 1
+.Sh AUTHORS
+.Nm
+was written by
+.An Thorsten Glaser Aq tg@mirbsd.org
+mostly for tarent GmbH.

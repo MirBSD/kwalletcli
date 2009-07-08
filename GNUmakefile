@@ -1,4 +1,4 @@
-# $MirOS: contrib/hosted/tg/code/kwalletcli/GNUmakefile,v 1.4 2009/07/08 12:34:20 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/GNUmakefile,v 1.5 2009/07/08 15:09:52 tg Exp $
 #-
 # Copyright © 2009
 #	Thorsten Glaser <t.glaser@tarent.de>
@@ -18,10 +18,12 @@
 # damage or existence of a defect, except proven that it results out
 # of said person’s immediate fault when using the work as intended.
 
-SCRIPTS=	kwalletaskpass kwalletcli_getpin
-BINDIR=		/usr/bin
+SCRIPTS=	kwalletaskpass kwalletcli_getpin pinentry-kwallet
+BINDIR?=	/usr/bin
+MANDIR?=	/usr/share/man/man
 
 BINMODE?=	755
+MANMODE?=	444
 INSTALL_STRIP?=	-s
 
 PROG=		kwalletcli
@@ -44,6 +46,14 @@ install:
 	    ${PROG} ${DESTDIR}${BINDIR}/
 	install -c -m ${BINMODE} \
 	    ${SCRIPTS} ${DESTDIR}${BINDIR}/
+	for f in ${PROG} ${SCRIPTS}; do \
+		install -c -m ${MANMODE} $$f.1 ${DESTDIR}${MANDIR}1/; \
+	done
+
+uninstall:
+	for f in ${PROG} ${SCRIPTS}; do \
+		rm -f ${DESTDIR}${BINDIR}/$$f ${DESTDIR}${MANDIR}1/$$f.1; \
+	done
 
 clean:
 	-rm -f ${OBJS} ${PROG}
