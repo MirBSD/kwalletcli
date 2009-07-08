@@ -1,5 +1,5 @@
 #!/usr/bin/env mksh
-# $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin,v 1.1 2009/06/10 18:28:32 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin,v 1.2 2009/07/08 12:12:07 tg Exp $
 #-
 # Copyright © 2009
 #	Thorsten Glaser <t.glaser@tarent.de>
@@ -75,9 +75,11 @@ function usage {
 asktext='Hast Du das Paßwort?'
 askprompt='Code:'
 askerror=''
+askbool=0
 
-while getopts 'Ee:hp:t:' ch; do
+while getopts 'bEe:hp:t:' ch; do
 	case $ch {
+	(b)	askbool=1 ;;
 	(E)	askerror='' ;;
 	(e)	askerror=$OPTARG ;;
 	(p)	askprompt=$OPTARG ;;
@@ -104,7 +106,11 @@ checkline "OPTION lc-ctype=$LC_CTYPE"
 [[ -n $askprompt ]] && checkline "SETPROMPT $(toutf8 "$askprompt")"
 [[ -n $askerror ]] && checkline "SETERROR $(toutf8 "$askerror")"
 
-print -p GETPIN
+if (( askbool )); then
+	print -p CONFIRM
+else
+	print -p GETPIN
+fi
 read -p res || die 3 pinentry died
 if [[ $res = @(D )* ]]; then
 	pass=${res#D }
