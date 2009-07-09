@@ -16,6 +16,8 @@
  * of dealing in the work, even if advised of the possibility of such
  * damage or existence of a defect, except proven that it results out
  * of said person’s immediate fault when using the work as intended.
+ *-
+ * KWallet interface file for Qt 3 and KDE 3
  */
 
 #include <qstring.h>
@@ -29,7 +31,7 @@
 extern "C" char *strdup(const char *);
 
 extern "C" const char __rcsid_kwif_cc[] =
-    "$MirOS: contrib/hosted/tg/code/kwalletcli/kwif3.cc,v 1.1 2009/06/10 18:28:32 tg Exp $";
+    "$MirOS: contrib/hosted/tg/code/kwalletcli/kwif3.cc,v 1.2 2009/07/09 20:00:47 tg Exp $";
 
 int
 kw_io(const char *fld, const char *ent, const char **pwp, const char *vers)
