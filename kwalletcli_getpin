@@ -1,5 +1,5 @@
 #!/usr/bin/env mksh
-# $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin,v 1.7 2009/07/08 15:13:53 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin,v 1.8 2009/07/09 19:18:24 tg Exp $
 #-
 # Copyright © 2009
 #	Thorsten Glaser <t.glaser@tarent.de>
@@ -25,11 +25,13 @@ unset LC_ALL LANGUAGE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY \
 export LANG=C LC_CTYPE LC_MESSAGES GPG_TERM GPG_TTY
 set -U
 
+quiet=0
+
 function die {
 	local rv=$1
 
 	shift
-	print -u2 -r -- "$@"
+	(( quiet )) || print -u2 -r -- "$@"
 	exit $rv
 }
 
@@ -66,7 +68,7 @@ function toutf8 {
 }
 
 function usage {
-	print -u2 "Usage: kwalletcli_getpin [-E | -e errortext]" \
+	print -u2 "Usage: kwalletcli_getpin [-bq] [-E | -e errortext]" \
 	    "[-p prompt] [-t desctext]"
 	print -u2 "Returns: 0=ok (pw on stdout), 1=cancel, 2+=error"
 	exit 2
@@ -78,12 +80,13 @@ askprompt='Code:'
 askerror=''
 askbool=0
 
-while getopts 'bEe:hp:t:' ch; do
+while getopts 'bEe:hp:qt:' ch; do
 	case $ch {
 	(b)	askbool=1 ;;
 	(E)	askerror='' ;;
 	(e)	askerror=$OPTARG ;;
 	(p)	askprompt=$OPTARG ;;
+	(q)	quiet=1 ;;
 	(t)	asktext=$OPTARG ;;
 	(*)	usage ;;
 	}

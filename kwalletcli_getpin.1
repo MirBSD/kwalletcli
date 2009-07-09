@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin.1,v 1.6 2009/07/08 15:12:26 tg Exp $
+.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin.1,v 1.7 2009/07/09 19:18:25 tg Exp $
 .\"-
 .\" Copyright © 2009
 .\"	Thorsten Glaser <tg@mirbsd.org>
@@ -47,7 +47,7 @@
 .el .xD \\$1 \\$2 \\$3 \\$4 \\$5 \\$6 \\$7 \\$8
 ..
 .\"-
-.Dd $Mdocdate: July 8 2009 $
+.Dd $Mdocdate: July 9 2009 $
 .Dt KWALLETCLI_GETPIN 1
 .Os
 .Sh NAME
@@ -55,6 +55,7 @@
 .Nd command line interface to pinentry
 .Sh SYNOPSIS
 .Nm
+.Op Fl q
 .Op Fl E | e Ar errortext
 .Op Fl b | p Ar prompt
 .Op Fl t Ar desctext
@@ -83,6 +84,8 @@ Set the small descriptive text shown in front of the input field
 .Pq Dq the Prompt
 to
 .Ar prompt .
+.It Fl q
+Be more quiet.
 .It Fl t Ar desctxt
 Set the descriptive text
 .Pq the input challenge
