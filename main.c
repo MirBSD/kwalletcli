@@ -27,16 +27,16 @@
 
 extern const char __rcsid_kwif_cc[];
 const char __rcsid_main_c[] =
-    "$MirOS: contrib/hosted/tg/code/kwalletcli/main.c,v 1.4 2009/07/09 15:05:35 tg Exp $";
+    "$MirOS: contrib/hosted/tg/code/kwalletcli/main.c,v 1.5 2009/07/09 18:43:30 tg Exp $";
 
 int
 main(int argc, char *argv[])
 {
-	int ch, rv;
+	int ch, rv, quiet = 0;
 	const char *kw_folder = NULL, *kw_entry = NULL, *kw_pass = NULL, *fmts;
 	char *vers;
 
-	while ((ch = getopt(argc, argv, "e:f:hPp:V")) != -1) {
+	while ((ch = getopt(argc, argv, "e:f:hPp:qV")) != -1) {
 		switch (ch) {
 		case 'e':
 			kw_entry = optarg;
@@ -68,9 +68,14 @@ main(int argc, char *argv[])
 		case 'p':
 			kw_pass = optarg;
 			break;
+		case 'q':
+			quiet = 1;
+			break;
 		case 'V':
-			fprintf(stderr, "%s\n%s\n%s\n", __rcsid_main_c,
-			    __rcsid_kwif_cc, KWALLETCLI_H);
+			if (!quiet)
+				fprintf(stderr, "%s\n%s\n%s\n",
+				    __rcsid_main_c, __rcsid_kwif_cc,
+				    KWALLETCLI_H);
 			return (0);
 		case 'h':
 		default:
@@ -93,7 +98,8 @@ main(int argc, char *argv[])
 		printf("%s", kw_pass);
 		break;
 	case KWE_NOWALLET:
-		fprintf(stderr, "cannot open wallet\n");
+		if (!quiet)
+			fprintf(stderr, "cannot open wallet\n");
 		break;
 	case KWE_NOFOLDER:
 		fmts = "folder '%s' does not exist\n";
@@ -101,23 +107,28 @@ main(int argc, char *argv[])
 		/* FALLTHROUGH */
 	case KWE_ERRFOLDER:
 		fmts = "cannot open folder '%s'\n";
-		fprintf(stderr, fmts, kw_folder);
+		if (!quiet)
+			fprintf(stderr, fmts, kw_folder);
 		break;
 	case KWE_NOENTRY:
 		fmts = "entry '%s' does not exist in folder '%s'\n";
 		if (0)
+		/* FALLTHROUGH */
 	case KWE_ERRENTRY:
 		fmts = "error reading entry '%s' from folder '%s'\n";
 		if (0)
+		/* FALLTHROUGH */
 	case KWE_ERR_SET:
 		fmts = "error writing entry '%s' to folder '%s'\n";
-		fprintf(stderr, fmts, kw_entry, kw_folder);
+		if (!quiet)
+			fprintf(stderr, fmts, kw_entry, kw_folder);
 		break;
 	case KWE_OK_SET:
 		rv = 0;
 		break;
 	case KWE_ABORT:
-		fprintf(stderr, "internal error\n");
+		if (!quiet)
+			fprintf(stderr, "internal error\n");
 	default:
 		fflush(NULL);
 		abort();
