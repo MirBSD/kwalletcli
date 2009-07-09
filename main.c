@@ -27,7 +27,7 @@
 
 extern const char __rcsid_kwif_cc[];
 const char __rcsid_main_c[] =
-    "$MirOS: contrib/hosted/tg/code/kwalletcli/main.c,v 1.3 2009/06/10 19:00:42 tg Exp $";
+    "$MirOS: contrib/hosted/tg/code/kwalletcli/main.c,v 1.4 2009/07/09 15:05:35 tg Exp $";
 
 int
 main(int argc, char *argv[])
@@ -71,6 +71,7 @@ main(int argc, char *argv[])
 		case 'V':
 			fprintf(stderr, "%s\n%s\n%s\n", __rcsid_main_c,
 			    __rcsid_kwif_cc, KWALLETCLI_H);
+			return (0);
 		case 'h':
 		default:
  usage:
