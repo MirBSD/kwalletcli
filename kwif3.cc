@@ -30,10 +30,10 @@
 
 extern "C" char *strdup(const char *);
 
-extern "C" const char __rcsid_kwif_cc[] =
-    "$MirOS: contrib/hosted/tg/code/kwalletcli/kwif3.cc,v 1.2 2009/07/09 20:00:47 tg Exp $";
+extern "C" const char __rcsid_kwif[] =
+    "$MirOS: contrib/hosted/tg/code/kwalletcli/kwif3.cc,v 1.3 2009/07/10 10:50:06 tg Exp $";
 
-int
+extern "C" int
 kw_io(const char *fld, const char *ent, const char **pwp, const char *vers)
 {
 	int rv;

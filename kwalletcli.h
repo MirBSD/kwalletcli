@@ -19,14 +19,20 @@
  */
 
 #ifndef KWALLETCLI_H
-#define KWALLETCLI_H	"$MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.h,v 1.3 2009/06/10 19:00:42 tg Exp $"
+#define KWALLETCLI_H	"$MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.h,v 1.4 2009/07/10 10:50:06 tg Exp $"
 
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+
+/* exported by kwif*.cc */
+
+extern const char __rcsid_kwif[];
+
 int kw_io(const char *, const char *, const char **, const char *);
+
 
 /* these are (except abort/usage and OK) the same as exit codes */
 #define KWE_OK_GET	0

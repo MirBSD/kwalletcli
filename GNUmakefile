@@ -1,4 +1,4 @@
-# $MirOS: contrib/hosted/tg/code/kwalletcli/GNUmakefile,v 1.6 2009/07/09 18:47:24 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/GNUmakefile,v 1.7 2009/07/10 10:50:06 tg Exp $
 #-
 # Copyright © 2009
 #	Thorsten Glaser <t.glaser@tarent.de>
@@ -27,12 +27,20 @@ MANMODE?=	444
 INSTALL_STRIP?=	-s
 
 PROG=		kwalletcli
-SRCS=		main.c kwif.cc
-OBJS=		main.o kwif.o
+SRCS=		main.c
+OBJS=		main.o
 
+KDE_VER:=	3
+ifeq (${KDE_VER},3)
 KDE_INCS?=	-I/usr/include/qt3 -I/usr/include/kde
-CPPFLAGS+=	${KDE_INCS} -D_GNU_SOURCE
+SRCS+=		kwif3.cc
+OBJS+=		kwif3.o
 LDADD+=		-lkwalletclient
+else
+$(error unknown KDE_VER)
+endif
+
+CPPFLAGS+=	${KDE_INCS} -D_GNU_SOURCE
 
 CC?=		gcc
 CXX?=		g++

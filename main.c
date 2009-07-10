@@ -25,9 +25,8 @@
 
 #include "kwalletcli.h"
 
-extern const char __rcsid_kwif_cc[];
 const char __rcsid_main_c[] =
-    "$MirOS: contrib/hosted/tg/code/kwalletcli/main.c,v 1.5 2009/07/09 18:43:30 tg Exp $";
+    "$MirOS: contrib/hosted/tg/code/kwalletcli/main.c,v 1.6 2009/07/10 10:50:06 tg Exp $";
 
 int
 main(int argc, char *argv[])
@@ -74,7 +73,7 @@ main(int argc, char *argv[])
 		case 'V':
 			if (!quiet)
 				fprintf(stderr, "%s\n%s\n%s\n",
-				    __rcsid_main_c, __rcsid_kwif_cc,
+				    __rcsid_main_c, __rcsid_kwif,
 				    KWALLETCLI_H);
 			return (0);
 		case 'h':
@@ -88,7 +87,7 @@ main(int argc, char *argv[])
 	if ((argc - optind) || !kw_folder || !kw_entry)
 		goto usage;
 
-	if (asprintf(&vers, "%s %s %s", __rcsid_main_c, __rcsid_kwif_cc,
+	if (asprintf(&vers, "%s %s %s", __rcsid_main_c, __rcsid_kwif,
 	    KWALLETCLI_H) == -1)
 		vers = NULL;
 
