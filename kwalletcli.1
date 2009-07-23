@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.1,v 1.5 2009/07/09 18:46:19 tg Exp $
+.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.1,v 1.6 2009/07/23 07:41:53 tg Exp $
 .\"-
 .\" Copyright © 2009
 .\"	Thorsten Glaser <tg@mirbsd.org>
@@ -47,7 +47,7 @@
 .el .xD \\$1 \\$2 \\$3 \\$4 \\$5 \\$6 \\$7 \\$8
 ..
 .\"-
-.Dd $Mdocdate: July 9 2009 $
+.Dd $Mdocdate: July 23 2009 $
 .Dt KWALLETCLI 1
 .Os
 .Sh NAME
@@ -132,6 +132,11 @@ The value to the key specified could not be retrieved.
 .It 8
 An error occured trying to write the value.
 .El
+.Pp
+The exit codes 1 and 4, on reading, are not fatal; they merely indicate
+that the folder or entry specified does not exist.
+The other errors are fatal and may be used to indicate the user that the
+KWallet should not be used any more during the current session.
 .Sh SEE ALSO
 .Xr kwalletcli_getpin 1
 .Sh AUTHORS
@@ -150,4 +155,3 @@ Use
 instead and provide the
 .Ar password
 on standard input.
-The KDE Wallet apparently removes a trailing newline.
