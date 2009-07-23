@@ -1,5 +1,5 @@
 #!/usr/bin/env mksh
-# $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin,v 1.9 2009/07/23 15:18:18 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin,v 1.10 2009/07/23 15:26:04 tg Exp $
 #-
 # Copyright © 2009
 #	Thorsten Glaser <t.glaser@tarent.de>
@@ -69,6 +69,21 @@ function toutf8 {
 	print -nr -- "$outtext"
 }
 
+function tolat1 {
+	local intext="$*" outtext=''
+	typeset -i i=0 n=${#intext}
+	typeset -i1 c
+	typeset -Uui16 -Z5 x
+
+	while (( i < n )); do
+		c=1#${intext:(i++):1}
+		(( c = c < 0x80 ? c : (c & 0xFF80) == 0xEF80 ? c : c | 0xEF00 ))
+		outtext=${outtext}${c#1#}
+	done
+
+	print -nr -- "$outtext"
+}
+
 function usage {
 	print -u2 "Usage: kwalletcli_getpin [-bq] [-E | -e errortext]" \
 	    "[-p prompt] [-t desctext]"
@@ -129,7 +144,8 @@ if (( !got_pe )); then
 	[[ -n $askprompt ]] && thetext=$thetext$sep$(toutf8 "$askprompt")
 
 	if (( askbool )) && [[ -n $DISPLAY ]]; then
-		xmessage -nearmouse -buttons Yes,No -default Yes "$thetext"
+		LC_ALL=C xmessage -nearmouse -buttons Yes,No -default Yes \
+		    "$(tolat1 "$thetext")"
 		rc=$?
 		(( rc == 101 )) && exit 0
 		(( rc == 102 )) && exit 1
