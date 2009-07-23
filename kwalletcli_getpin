@@ -1,5 +1,5 @@
 #!/usr/bin/env mksh
-# $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin,v 1.8 2009/07/09 19:18:24 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin,v 1.9 2009/07/23 15:18:18 tg Exp $
 #-
 # Copyright © 2009
 #	Thorsten Glaser <t.glaser@tarent.de>
@@ -26,6 +26,8 @@ export LANG=C LC_CTYPE LC_MESSAGES GPG_TERM GPG_TTY
 set -U
 
 quiet=0
+nl='
+'
 
 function die {
 	local rv=$1
@@ -101,12 +103,59 @@ if [[ -n $DISPLAY ]]; then
 fi
 
 [[ -n $PINENTRY ]] || PINENTRY=pinentry
-"${PINENTRY%-kwallet}" "${pe_args[@]}" |&
-read -p res || die 3 pinentry died
-[[ $res = OK@(| *) ]] || die 4 "got '$res' for '$*'"
+if "${PINENTRY%-kwallet}" --version >/dev/null 2>&1; then
+	"${PINENTRY%-kwallet}" "${pe_args[@]}" |&
+	read -p res || die 3 pinentry died
+	[[ $res = OK@(| *) ]] || die 4 "got '$res' for '$*'"
+	got_pe=1
+else
+	got_pe=0
+fi
 
 [[ -z $DISPLAY && -z $GPG_TTY ]] && GPG_TTY=$(tty)
 [[ -z $GPG_TERM ]] && GPG_TERM=${TERM:-vt100}
+
+if (( !got_pe )); then
+	thetext=
+	sep=
+	if [[ -n $askerror ]]; then
+		thetext="*ERROR*: $(toutf8 "$askerror")"
+		sep=$nl$nl
+	fi
+	if [[ -n $asktext ]]; then
+		thetext=$thetext$sep$(toutf8 "$asktext")
+		sep=$nl$nl
+	fi
+	[[ -n $askprompt ]] && thetext=$thetext$sep$(toutf8 "$askprompt")
+
+	if (( askbool )) && [[ -n $DISPLAY ]]; then
+		xmessage -nearmouse -buttons Yes,No -default Yes "$thetext"
+		rc=$?
+		(( rc == 101 )) && exit 0
+		(( rc == 102 )) && exit 1
+		die 3 xmessage errored out
+	fi
+	if [[ -n $askprompt ]]; then
+		thetext="$thetext "
+	else
+		thetext=$thetext$nl
+	fi
+	trap 'exit 1' 1 2 3 13 15
+	while :; do
+		print -nru2 -- "$thetext"
+		IFS= read -r resp || exit 1
+		if (( !askbool )); then
+			print -nr -- "$resp"
+			exit 0
+		fi
+		[[ $resp = ?(1|-1|[Tt]?([Rr][Uu][Ee])|[Yy]?([Ee][Ss])) ]] && \
+		    exit 0
+		[[ $resp = @(0|[Ff]?([Aa][Ll][Ss][Ee])|[Nn]?([Oo])) ]] && \
+		    exit 1
+		print -u2 "Try again: 1/T[rue]/Y[es] vs 0/F[alse]/N[o]"
+	done 0<>$GPG_TTY 2>&0
+fi
+
 [[ -z $GPG_TTY ]] || checkline "OPTION ttyname=$GPG_TTY"
 [[ -z $GPG_TERM ]] || checkline "OPTION ttytype=$GPG_TERM"
 [[ -z $LC_CTYPE ]] || checkline "OPTION lc-ctype=$LC_CTYPE"
