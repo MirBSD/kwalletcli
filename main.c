@@ -26,7 +26,7 @@
 #include "kwalletcli.h"
 
 const char __rcsid_main_c[] =
-    "$MirOS: contrib/hosted/tg/code/kwalletcli/main.c,v 1.6 2009/07/10 10:50:06 tg Exp $";
+    "$MirOS: contrib/hosted/tg/code/kwalletcli/main.c,v 1.7 2009/07/24 12:21:14 tg Exp $";
 
 int
 main(int argc, char *argv[])
@@ -91,6 +91,8 @@ main(int argc, char *argv[])
 	    KWALLETCLI_H) == -1)
 		vers = NULL;
 
+	if (quiet)
+		fclose(stderr);
 	rv = kw_io(kw_folder, kw_entry, &kw_pass, vers ? vers : "");
 	switch (rv) {
 	case KWE_OK_GET:

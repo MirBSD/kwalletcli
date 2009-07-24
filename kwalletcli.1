@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.1,v 1.6 2009/07/23 07:41:53 tg Exp $
+.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.1,v 1.7 2009/07/24 12:21:13 tg Exp $
 .\"-
 .\" Copyright © 2009
 .\"	Thorsten Glaser <tg@mirbsd.org>
@@ -47,7 +47,7 @@
 .el .xD \\$1 \\$2 \\$3 \\$4 \\$5 \\$6 \\$7 \\$8
 ..
 .\"-
-.Dd $Mdocdate: July 23 2009 $
+.Dd $Mdocdate: July 24 2009 $
 .Dt KWALLETCLI 1
 .Os
 .Sh NAME
@@ -123,6 +123,9 @@ The usage was shown.
 .It 3
 The Wallet could not be opened.
 May be a missing DCOP connection.
+Perhaps
+.Ev DISPLAY
+is not set.
 .It 4
 The folder specified cannot be found (read access).
 .It 5
@@ -155,3 +158,7 @@ Use
 instead and provide the
 .Ar password
 on standard input.
+.Pp
+Beware of trailing newlines, especially outside of
+.Xr mksh 1
+scripts!

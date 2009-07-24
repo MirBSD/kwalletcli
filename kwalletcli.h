@@ -19,7 +19,7 @@
  */
 
 #ifndef KWALLETCLI_H
-#define KWALLETCLI_H	"$MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.h,v 1.4 2009/07/10 10:50:06 tg Exp $"
+#define KWALLETCLI_H	"$MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.h,v 1.5 2009/07/24 12:21:14 tg Exp $"
 
 
 #ifdef __cplusplus
@@ -31,6 +31,7 @@ extern "C" {
 
 extern const char __rcsid_kwif[];
 
+/* this function MUST NOT fail if stderr is closed */
 int kw_io(const char *, const char *, const char **, const char *);
 
 
