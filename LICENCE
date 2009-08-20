@@ -1,0 +1,72 @@
+kwalletcli – Command-Line Interface for the KDE Wallet
+──────────────────────────────────────────────────────
+
+kwalletcli is “OSI Certified Open Source Software” and distributed
+under the following Terms and Conditions:
+
+
+kwalletcli is covered by The MirOS Licence:
+
+Copyright © 2009
+	Thorsten Glaser <t.glaser@tarent.de>
+
+Provided that these terms and disclaimer and all copyright notices
+are retained or reproduced in an accompanying document, permission
+is granted to deal in this work without restriction, including un‐
+limited rights to use, publicly perform, distribute, sell, modify,
+merge, give away, or sublicence.
+
+This work is provided “AS IS” and WITHOUT WARRANTY of any kind, to
+the utmost extent permitted by applicable law, neither express nor
+implied; without malicious intent or gross negligence. In no event
+may a licensor, author or contributor be held liable for indirect,
+direct, other damage, loss, or other issues arising in any way out
+of dealing in the work, even if advised of the possibility of such
+damage or existence of a defect, except proven that it results out
+of said person’s immediate fault when using the work as intended.
+
+
+The icon/logo for kwalletcli is a derivate of “The ‘m’” which is a
+part of the logo for The MirBSD Korn Shell and covered by the same
+licence as mksh itself (The MirOS Licence, see above):
+
+  Copyright © 2008, 2009 Lukas U. <smultron@midnightbsd.org>
+  Copyright © 2008 Thorsten „mirabilos“ Glaser <tg@mirbsd.org>
+
+It is also a derivate of The Oxygen Icon Theme by <kde-artists@kde.org>:
+
+  Copyright © 2007 David Vignoni <david@icon-king.com>
+  Copyright © 2007 Johann Ollivier Lapeyre <johann@oxygen-icons.org>
+  Copyright © 2007 Kenneth Wimer <kwwii@bootsplash.org>
+  Copyright © 2007 Nuno Fernades Pinheiro <nf.pinheiro@gmail.com>
+  Copyright © 2007 Riccardo Iaconelli <riccardo@oxygen-icons.org>
+  Copyright © 2007 David J. Miller <miller@oxygen-icons.org>
+  and others (Jakob Petsovits <jpetso@gmx.at>, etc.)
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Library General Public
+License as published by the Free Software Foundation; either
+version 3 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Library General Public License for more details.
+
+KDE Oxygen theme icons is a special kind of software library, it
+is an artwork library, it's elements can be used in a Graphical
+User Interface, or GUI. Source code, for this library means:
+where they exist, SVG; otherwise, if applicable, the multi-layered
+formats XCF or PSD, or otherwise PNG.
+
+The LGPL in some sections obliges you to make the files carry
+notices. With images this is in some cases impossible or hardly useful.
+
+With this library a notice is placed at a prominent place in the
+directory containing the elements. You may follow this practice.
+
+The exception in section 5 of the GNU Lesser General Public License
+covers the use of elements of this art library in a GUI.
+
+ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲
+$MirOS: contrib/hosted/tg/code/kwalletcli/LICENCE,v 1.1 2009/08/20 14:20:48 tg Exp $
