@@ -9,6 +9,8 @@ kwalletcli is covered by The MirOS Licence:
 
 Copyright © 2009
 	Thorsten Glaser <t.glaser@tarent.de>
+KDE 4 bindings Copyright © 2009
+	Thomas Fischer <fischer@unix-ag.uni-kl.de>
 
 Provided that these terms and disclaimer and all copyright notices
 are retained or reproduced in an accompanying document, permission
@@ -69,4 +71,4 @@ The exception in section 5 of the GNU Lesser General Public License
 covers the use of elements of this art library in a GUI.
 
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲
-$MirOS: contrib/hosted/tg/code/kwalletcli/LICENCE,v 1.1 2009/08/20 14:20:48 tg Exp $
+$MirOS: contrib/hosted/tg/code/kwalletcli/LICENCE,v 1.2 2009/09/28 07:36:30 tg Exp $
