@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletaskpass.1,v 1.2 2009/07/08 12:34:20 tg Exp $
+.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletaskpass.1,v 1.3 2009/11/22 18:23:30 tg Exp $
 .\"-
 .\" Copyright © 2009
 .\"	Thorsten Glaser <tg@mirbsd.org>
@@ -19,9 +19,9 @@
 .\" of said person’s immediate fault when using the work as intended.
 .\"-
 .\" Try to make GNU groff and AT&T nroff more compatible
-.\" * ` generates ‘ in groff, so use \`
-.\" * ' generates ’ in groff, \' generates ´, so use \*(aq
-.\" * - generates ‐ in groff, \- generates −, fixed in tmac/mdoc/doc-groff
+.\" * ` generates ‘ in gnroff, so use \`
+.\" * ' generates ’ in gnroff, \' generates ´, so use \*(aq
+.\" * - generates ‐ in gnroff, \- generates −, so .tr it to -
 .\"   thus use - for hyphens and \- for minus signs and option dashes
 .\" * ~ is size-reduced and placed atop in groff, so use \*(TI
 .\" * ^ is size-reduced and placed atop in groff, so use \*(ha
@@ -47,7 +47,7 @@
 .el .xD \\$1 \\$2 \\$3 \\$4 \\$5 \\$6 \\$7 \\$8
 ..
 .\"-
-.Dd $Mdocdate: July 8 2009 $
+.Dd $Mdocdate: November 22 2009 $
 .Dt KWALLETASKPASS 1
 .Os
 .Sh NAME
@@ -61,7 +61,7 @@
 .Nm
 is a kwallet- and pinentry-based pass-phrase dialog for use with OpenSSH.
 It is intended to be called from the
-.Xr ssh-add 1
+.Xr ssh\-add 1
 programme and not invoked directly.
 .Pp
 If a passphrase is requested,
@@ -83,7 +83,7 @@ There are currently no options.
 .Sh RETURN VALUES
 .Nm
 exits 0 on success, 1 if the user cancelled the dialogue,
-or >1 if an error occured.
+or \*(Gt1 if an error occured.
 .Sh ENVIRONMENT
 .Bl -tag -width PINENTRY
 .It Ev PINENTRY
@@ -96,8 +96,8 @@ The default is inherited from
 .Sh SEE ALSO
 .Xr kwalletcli 1 ,
 .Xr kwalletcli_getpin 1 ,
-.Xr ssh-add 1 ,
-.Xr ssh-askpass 1
+.Xr ssh\-add 1 ,
+.Xr ssh\-askpass 1
 .Sh AUTHORS
 .Nm
 was written by

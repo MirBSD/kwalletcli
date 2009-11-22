@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin.1,v 1.8 2009/07/23 15:18:18 tg Exp $
+.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin.1,v 1.9 2009/11/22 18:23:30 tg Exp $
 .\"-
 .\" Copyright © 2009
 .\"	Thorsten Glaser <tg@mirbsd.org>
@@ -19,9 +19,9 @@
 .\" of said person’s immediate fault when using the work as intended.
 .\"-
 .\" Try to make GNU groff and AT&T nroff more compatible
-.\" * ` generates ‘ in groff, so use \`
-.\" * ' generates ’ in groff, \' generates ´, so use \*(aq
-.\" * - generates ‐ in groff, \- generates −, fixed in tmac/mdoc/doc-groff
+.\" * ` generates ‘ in gnroff, so use \`
+.\" * ' generates ’ in gnroff, \' generates ´, so use \*(aq
+.\" * - generates ‐ in gnroff, \- generates −, so .tr it to -
 .\"   thus use - for hyphens and \- for minus signs and option dashes
 .\" * ~ is size-reduced and placed atop in groff, so use \*(TI
 .\" * ^ is size-reduced and placed atop in groff, so use \*(ha
@@ -47,7 +47,7 @@
 .el .xD \\$1 \\$2 \\$3 \\$4 \\$5 \\$6 \\$7 \\$8
 ..
 .\"-
-.Dd $Mdocdate: July 23 2009 $
+.Dd $Mdocdate: November 22 2009 $
 .Dt KWALLETCLI_GETPIN 1
 .Os
 .Sh NAME
@@ -112,9 +112,9 @@ All input and output is assumed to be in UTF-8.
 The
 .Nm
 utility exits 0 on success, 1 if the password input
-was cancelled by the user, or >1 if an error occurred.
+was cancelled by the user, or \*(Gt1 if an error occurred.
 Confirmation (boolean) error codes are 0 for Yes,
-1 for No, or >1 if an error occurred.
+1 for No, or \*(Gt1 if an error occurred.
 .Sh ENVIRONMENT
 .Bl -tag -width LC_MESSAGES
 .It Ev DISPLAY
@@ -148,7 +148,7 @@ Default:
 .Dq pinentry
 .El
 .Sh SEE ALSO
-.Xr gpg-agent 1 ,
+.Xr gpg\-agent 1 ,
 .Xr kwalletcli 1 ,
 .Xr pinentry 1 ,
 .Xr stty 1 ,
