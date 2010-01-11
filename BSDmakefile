@@ -1,6 +1,6 @@
-# $MirOS: contrib/hosted/tg/code/kwalletcli/BSDmakefile,v 1.10 2009/10/09 09:03:33 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/BSDmakefile,v 1.11 2010/01/11 18:34:11 tg Exp $
 #-
-# Copyright © 2009
+# Copyright © 2009, 2010
 #	Thorsten Glaser <tg@mirbsd.org>
 #
 # Provided that these terms and disclaimer and all copyright notices
@@ -46,3 +46,32 @@ afterinstall:
 .endfor
 
 .include <bsd.prog.mk>
+
+# HTML manpage generation code (currently assumes the basenames
+# of all manpages to be generated are unique, unlike man(1, 7).
+HTMANMODE?=	local		# one of local or sectioned
+.for _p in ${MANALL}
+HTMANS+=	${_p:R}.htm
+${_p:R}.htm: ${_p}
+	@(. ${BSDSRCDIR}/scripts/roff2htm; \
+	    do_conversion_verbose ${_p:R} ${_p:E:S/cat//} ${_p} $@)
+.endfor
+.for _s _t in ${MLINKS}
+HTMANS+=	${_t:R}.htm
+${_t:R}.htm: ${_s:R}.htm
+	@print -ru2 ${_t:R:Q}.htm ← ${_s:R:Q}.htm
+.if ${HTMANMODE:L:Mlocal}
+	@(print '/<title>/s#</title>#, ${_t:R}(${_t:E})&#'; \
+	  print '/<h1>/s#</h1>#, <a href="$@">${_t:R}(${_t:E})</a>&#'; \
+	  print wq) | ed -s ${_s:R}.htm
+.else
+	@(print '/<title>/s#</title>#, ${_t:R}(${_t:E})&#'; \
+	  print '/<h1>/s#</h1>#, <a' \
+	    'href="../man${_t:E}/$@">${_t:R}(${_t:E})</a>&#'; \
+	  print wq) | ed -s ${_s:R}.htm
+.endif
+	@ln -f ${.ALLSRC} $@
+.endfor
+
+CLEANFILES+=	${HTMANS}
+htman: .PHONY ${HTMANS}
