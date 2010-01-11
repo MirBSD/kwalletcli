@@ -1,5 +1,5 @@
 /*-
- * Copyright © 2009
+ * Copyright © 2009, 2010
  *	Thorsten Glaser <t.glaser@tarent.de>
  *
  * Provided that these terms and disclaimer and all copyright notices
@@ -28,10 +28,11 @@
 
 #include "kwalletcli.h"
 
+extern "C" char *getenv(const char *);
 extern "C" char *strdup(const char *);
 
 extern "C" const char __rcsid_kwif[] =
-    "$MirOS: contrib/hosted/tg/code/kwalletcli/kwif3.cc,v 1.3 2009/07/10 10:50:06 tg Exp $";
+    "$MirOS: contrib/hosted/tg/code/kwalletcli/kwif3.cc,v 1.4 2010/01/11 15:34:30 tg Exp $";
 
 extern "C" int
 kw_io(const char *fld, const char *ent, const char **pwp, const char *vers)
@@ -39,9 +40,14 @@ kw_io(const char *fld, const char *ent, const char **pwp, const char *vers)
 	int rv;
 	QString localwallet, qfld, qent, qpw;
 	KWallet::Wallet *wallet;
+	char *env_DISPLAY;
 
 	if (pwp == NULL)
 		return (KWE_ABORT);
+
+	/* very basic protection against kdeinit errors */
+	if (!(env_DISPLAY = getenv("DISPLAY")) || !*env_DISPLAY)
+		return (KWE_NOWALLET);
 
 	qfld = QString::fromUtf8(fld);
 	qent = QString::fromUtf8(ent);
