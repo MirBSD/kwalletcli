@@ -1,5 +1,5 @@
 #!/usr/bin/env mksh
-rcsid='$MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet,v 1.6 2010/03/03 09:17:39 tg Exp $'
+rcsid='$MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet,v 1.7 2010/03/03 09:22:35 tg Exp $'
 #-
 # Copyright © 2009, 2010
 #	Thorsten Glaser <tg@mirbsd.org>
@@ -238,9 +238,23 @@ while IFS= read -r line; do
 		    "option ${line#CONFIRM }"
 		;;
 	(BYE@(| *))
-		# undocumented, but used by GnuPG v2
 		print OK
 		break
+		;;
+	(GETINFO\ pid)
+		# undocumented, but used by GnuPG v2
+		print D $$
+		print OK
+		break
+		;;
+	(GETINFO\ pid)
+		# undocumented, but used by GnuPG v2
+		# just copy it quietly
+		;;
+	(GETINFO\ *)
+		# undocumented, but used by GnuPG v2
+		(( quiet )) || print -ru2 "warning: unknown GETINFO" \
+		    "capability ${line#GETINFO }"
 		;;
 	(*)
 		(( quiet )) || print -ru2 "warning: unknown line '$line'"
