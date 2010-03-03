@@ -1,5 +1,5 @@
 #!/usr/bin/env mksh
-rcsid='$MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet,v 1.7 2010/03/03 09:22:35 tg Exp $'
+rcsid='$MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet,v 1.8 2010/03/03 11:17:51 tg Exp $'
 #-
 # Copyright © 2009, 2010
 #	Thorsten Glaser <tg@mirbsd.org>
@@ -19,18 +19,47 @@ rcsid='$MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet,v 1.7 2010/03/
 # damage or existence of a defect, except proven that it results out
 # of said person’s immediate fault when using the work as intended.
 
-#XXX TODO: make all stdio *and* coproc I/O go through functions that
-#XXX allow to hook in debugging (logging to a file)
-
 unset LC_ALL LANGUAGE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES \
     LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT LC_IDENTIFICATION
 export LANG=C LC_CTYPE=en_US.UTF-8
 set -U
 
+iodebug=0
+iodp=~/pinentry-kwallet.debug
+if (( iodebug )); then
+	print "\n$$ === new $(date)" >>"$iodp"
+	chmod 0600 "$iodp"
+fi
+function io_p_in {
+	local io_line
+	IFS= read -r io_line || return $?
+	(( iodebug )) && print -r -- "$$ <p $io_line" >>"$iodp"
+	eval $1=\$io_line
+	return 0
+}
+function io_s_in {
+	local io_line
+	IFS= read -pr io_line || return $?
+	(( iodebug )) && print -r -- "$$ <s $io_line" >>"$iodp"
+	eval $1=\$io_line
+	return 0
+}
+function io_p_out {
+	(( iodebug )) && print -r -- "$$ >p $(print "$@")" >>"$iodp"
+	print "$@"
+}
+function io_s_out {
+	(( iodebug )) && print -r -- "$$ >s $(print "$@")" >>"$iodp"
+	print -p "$@"
+}
+function log {
+	(( iodebug )) && print -r -- "$$ LOG $*" >>"$iodp"
+}
+
 if [[ -n $PINENTRY_KWALLET ]]; then
-	print ERR 7 trying to call me recursively
-	while read line; do
-		print ERR 7 trying to call me recursively
+	io_p_out ERR 7 trying to call me recursively
+	while io_s_in line; do
+		io_p_out ERR 7 trying to call me recursively
 	done
 	exit 1
 fi
@@ -38,7 +67,9 @@ fi
 quiet=0
 set -A args
 last=
+i=0
 for arg in "$@"; do
+	log "argv[$((++i))]='${arg//\'/\'\\\'\'}'"
 	if [[ $last = --display ]]; then
 		v=DISPLAY
 		last=specvar
@@ -94,14 +125,16 @@ for arg in "$@"; do
 done
 
 PINENTRY_KWALLET=set "${PINENTRY:-pinentry}" "${args[@]}" |&
-IFS= read -pr resp || resp='ERR 14 no coprocess'
+log "starting coproc $!: PINENTRY_KWALLET=set '${PINENTRY:-pinentry}' args"
+io_s_in resp || resp='ERR 14 no coprocess'
 if [[ $resp = OK@(| *) ]]; then
 	have_sub=1
 else
 	have_sub=0
 	exec 3>&p; exec 3>&-
 fi
-print OK ready to listen to your demands
+log have_sub=$have_sub
+io_p_out OK ready to listen to your demands
 
 x_dsctxt=
 x_prompt=
@@ -114,45 +147,50 @@ function getit {
 	# the errcnt handling is a little tricky, because GnuPG v2 does
 	# not reuse the pinentry session (suckers, unable to... *rant*)
 	if pw=$(kwalletcli -q -f pinentry-kwallet -e "$type-e-$key"); then
+		log "read errcnt: '$pw'"
 		set -A errcnt -- $pw
 		d=$(date -u +'%s')
 		(( errcnt[0] < (d - 15) )) && errcnt[1]=0
+	else
+		log "read errcnt failed"
 	fi
 	[[ -z $x_errtxt ]] || (( errcnt[1]++ ))
 	if (( errcnt[1] )); then
 		errcnt[0]=${d:-$(date -u +'%s')}
 		kwalletcli -q -f pinentry-kwallet -e "$type-e-$key" \
 		    -p "${errcnt[*]}"
+		log "write errcnt: '${errcnt[*]}' -> $?"
 	fi
 	if (( errcnt[1] < 2 )); then
 		pw=$(kwalletcli -q -f pinentry-kwallet -e "$type-v-$key")
 		rv=$?
+		log "read pass $rv: '$pw'"
 		case $type:$rv {
 		(bool:0)
 			if [[ $pw = \
 			    @(1|-1|[Tt][Rr][Uu][Ee]|[Yy][Ee][Ss]) ]]; then
-				print OK
+				io_p_out OK
 				return
 			elif [[ $pw = \
 			    @(0|[Ff][Aa][Ll][Ss][Ee]|[Nn][Oo]) ]]; then
-				print ERR 128 not confirmed
+				io_p_out ERR 128 not confirmed
 				return
 			fi
 			;;
 		(pass:0)
-			[[ -n $pw ]] && print -r "D $pw"
-			print OK
+			[[ -n $pw ]] && io_p_out -r "D $pw"
+			io_p_out OK
 			return
 			;;
 		}
 	fi
 	if (( !have_sub )); then
-		print ERR 14 no coprocess
+		io_p_out ERR 14 no coprocess
 		return
 	fi
 	if [[ $type = bool ]]; then
-		print -p CONFIRM
-		IFS= read -pr resp
+		io_s_out CONFIRM
+		io_s_in resp
 		case $resp {
 		(OK@(| *))
 			pw=1
@@ -164,25 +202,29 @@ function getit {
 			;;
 		}
 	else
-		print -p GETPIN
-		IFS= read -pr resp
+		io_s_out GETPIN
+		io_s_in resp
 		pw=
 		#XXX normally, read until OK|ERR
 		if [[ $resp = @(D )* ]]; then
 			pw=${resp#D }
-			IFS= read -pr resp
+			io_s_in resp
 		fi
 		[[ $resp = OK@(| *) ]] && tw=1
 	fi
-	(( tw )) && kwalletcli_getpin -qbt "Do you want to store your response for description
+	(( tw )) && if kwalletcli_getpin -qbt "Do you want to store your response for description
 '$x_dsctxt',
-prompt '$x_prompt' in the KDE Wallet?" && \
-	    kwalletcli -q -f pinentry-kwallet -e "$type-v-$key" -p "$pw"
-	[[ $type = pass ]] && [[ -n $pw ]] && print -r "D $pw"
-	print -r -- "$resp"
+prompt '$x_prompt' in the KDE Wallet?"; then
+		kwalletcli -q -f pinentry-kwallet -e "$type-v-$key" -p "$pw"
+		log "want store: yes, pw '$pw' -> $?"
+	else
+		log "want store: no"
+	fi
+	[[ $type = pass ]] && [[ -n $pw ]] && io_p_out -r "D $pw"
+	io_p_out -r -- "$resp"
 }
 
-while IFS= read -r line; do
+while io_p_in line; do
 	copyline=1
 	case $line {
 	(SETDESC)
@@ -238,14 +280,14 @@ while IFS= read -r line; do
 		    "option ${line#CONFIRM }"
 		;;
 	(BYE@(| *))
-		print OK
+		io_p_out OK
 		break
 		;;
 	(GETINFO\ pid)
 		# undocumented, but used by GnuPG v2
-		print D $$
-		print OK
-		break
+		io_p_out D $$
+		io_p_out OK
+		copyline=0
 		;;
 	(GETINFO\ pid)
 		# undocumented, but used by GnuPG v2
@@ -261,14 +303,14 @@ while IFS= read -r line; do
 		;;
 	}
 	(( copyline )) && if (( have_sub )); then
-		print -pr -- "$line"
+		io_s_out -r -- "$line"
 		resp=
 		while [[ $resp != @(OK|ERR)@(| *) ]]; do
-			IFS= read -pr resp
-			print -r -- "$resp"
+			io_s_in resp
+			io_p_out -r -- "$resp"
 		done
 	else
-		print OK
+		io_p_out OK
 	fi
 done
 exec 3>&p; exec 3>&-
