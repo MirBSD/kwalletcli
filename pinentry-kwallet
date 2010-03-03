@@ -1,7 +1,7 @@
 #!/usr/bin/env mksh
-rcsid='$MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet,v 1.5 2009/07/12 17:57:33 tg Exp $'
+rcsid='$MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet,v 1.6 2010/03/03 09:17:39 tg Exp $'
 #-
-# Copyright © 2009
+# Copyright © 2009, 2010
 #	Thorsten Glaser <tg@mirbsd.org>
 #
 # Provided that these terms and disclaimer and all copyright notices
@@ -18,6 +18,9 @@ rcsid='$MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet,v 1.5 2009/07/
 # of dealing in the work, even if advised of the possibility of such
 # damage or existence of a defect, except proven that it results out
 # of said person’s immediate fault when using the work as intended.
+
+#XXX TODO: make all stdio *and* coproc I/O go through functions that
+#XXX allow to hook in debugging (logging to a file)
 
 unset LC_ALL LANGUAGE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES \
     LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT LC_IDENTIFICATION
@@ -164,6 +167,7 @@ function getit {
 		print -p GETPIN
 		IFS= read -pr resp
 		pw=
+		#XXX normally, read until OK|ERR
 		if [[ $resp = @(D )* ]]; then
 			pw=${resp#D }
 			IFS= read -pr resp
@@ -244,8 +248,11 @@ while IFS= read -r line; do
 	}
 	(( copyline )) && if (( have_sub )); then
 		print -pr -- "$line"
-		IFS= read -pr resp
-		print -r -- "$resp"
+		resp=
+		while [[ $resp != @(OK|ERR)@(| *) ]]; do
+			IFS= read -pr resp
+			print -r -- "$resp"
+		done
 	else
 		print OK
 	fi
