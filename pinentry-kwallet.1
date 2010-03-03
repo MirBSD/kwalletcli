@@ -1,6 +1,6 @@
-.\" $MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet.1,v 1.4 2009/11/22 18:23:31 tg Exp $
+.\" $MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet.1,v 1.5 2010/03/03 09:19:24 tg Exp $
 .\"-
-.\" Copyright © 2009
+.\" Copyright © 2009, 2010
 .\"	Thorsten Glaser <tg@mirbsd.org>
 .\"
 .\" Provided that these terms and disclaimer and all copyright notices
@@ -47,7 +47,7 @@
 .el .xD \\$1 \\$2 \\$3 \\$4 \\$5 \\$6 \\$7 \\$8
 ..
 .\"-
-.Dd $Mdocdate: November 22 2009 $
+.Dd $Mdocdate: March 3 2010 $
 .Dt PINENTRY\-KWALLET 1
 .Os
 .Sh NAME
@@ -75,9 +75,9 @@ only if not found.
 The user is given the option to store it in the KWallet afterwards.
 .Pp
 .Nm
-talks the regular Aegypten protocol, as well as the undocumented
-.Ic BYE
-command, on stdio; all commands, even unknown ones, are passed through to a
+.Pq like other pinentry variants
+talks a simplified subset of the regular Assuan protocol on stdio;
+all commands, even unknown ones, are passed through to a
 .Nm pinentry
 co-process during run-time, even if the latter is never used.
 It accepts the same options as
@@ -100,7 +100,7 @@ and the user is asked anew.
 The counter is stored in the KWallet, which is suboptimal but necessary,
 because
 .Xr gpg2 1
-does not re-use the Aegypten sessions, instead spawning a new
+does not re-use the Assuan sessions, instead spawning a new
 .Nm
 each time a passphrase is required (rather stupid).
 Error counters are valid for 15 seconds since their last increasement.
@@ -109,7 +109,7 @@ Error counters are valid for 15 seconds since their last increasement.
 exits 1 if it is called recursively, 0 if help or version
 information are requested, and return codes do not matter
 in any other cases because errors are signalled in-band.
-It will exit 0 after the Aegypten session is terminated.
+It will exit 0 after the Assuan session is terminated.
 .Sh ENVIRONMENT
 .Bl -tag -width PINENTRY
 .It Ev DISPLAY

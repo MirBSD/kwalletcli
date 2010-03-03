@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin.1,v 1.9 2009/11/22 18:23:30 tg Exp $
+.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin.1,v 1.10 2010/03/03 09:19:23 tg Exp $
 .\"-
 .\" Copyright © 2009
 .\"	Thorsten Glaser <tg@mirbsd.org>
@@ -47,7 +47,7 @@
 .el .xD \\$1 \\$2 \\$3 \\$4 \\$5 \\$6 \\$7 \\$8
 ..
 .\"-
-.Dd $Mdocdate: November 22 2009 $
+.Dd $Mdocdate: March 3 2010 $
 .Dt KWALLETCLI_GETPIN 1
 .Os
 .Sh NAME
@@ -64,7 +64,7 @@ The
 .Nm
 utility is a shell wrapper speaking to
 .Nm pinentry
-using the Aegypten protocol.
+using the Assuan protocol.
 It will ask the user for a password and print it,
 without any trailing newline, to standard output.
 .Pp
