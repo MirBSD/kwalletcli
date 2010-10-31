@@ -1,4 +1,4 @@
-# $MirOS: contrib/hosted/tg/code/kwalletcli/GNUmakefile,v 1.9 2009/10/09 09:03:33 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/GNUmakefile,v 1.10 2010/10/31 10:43:02 tg Exp $
 #-
 # Copyright © 2009
 #	Thorsten Glaser <t.glaser@tarent.de>
@@ -35,13 +35,13 @@ ifeq (${KDE_VER},3)
 KDE_INCS?=	-I/usr/include/qt3 -I/usr/include/kde
 SRCS+=		kwif3.cc
 OBJS+=		kwif3.o
-LDADD+=		-lkwalletclient
+LDADD+=		-lkwalletclient -lkdecore -lqt-mt
 else
 ifeq (${KDE_VER},4)
 KDE_INCS?=	-I/usr/include/qt4 -I/usr/include/qt4/QtCore
 SRCS+=		kwif4.cc
 OBJS+=		kwif4.o
-LDADD+=		-lkdeui
+LDADD+=		-lkdeui -lkdecore -lQtCore
 else
 $(error unknown KDE_VER)
 endif

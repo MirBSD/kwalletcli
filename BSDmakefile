@@ -1,4 +1,4 @@
-# $MirOS: contrib/hosted/tg/code/kwalletcli/BSDmakefile,v 1.11 2010/01/11 18:34:11 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/BSDmakefile,v 1.12 2010/10/31 10:43:01 tg Exp $
 #-
 # Copyright © 2009, 2010
 #	Thorsten Glaser <tg@mirbsd.org>
@@ -28,11 +28,11 @@ KDE_VER?=	3
 .if ${KDE_VER} == 3
 KDE_INCS?=	-I/usr/include/qt3 -I/usr/include/kde
 SRCS+=		kwif3.cc
-LDADD+=		-lkwalletclient
+LDADD+=		-lkwalletclient -lkdecore -lqt-mt
 .elif ${KDE_VER} == 4
 KDE_INCS?=	-I/usr/include/qt4 -I/usr/include/qt4/QtCore
 SRCS+=		kwif4.cc
-LDADD+=		-lkdeui
+LDADD+=		-lkdeui -lkdecore -lQtCore
 .else
 .  error unknown KDE_VER
 .endif
