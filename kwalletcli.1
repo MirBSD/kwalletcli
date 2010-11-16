@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.1,v 1.11 2010/03/03 09:53:35 tg Exp $
+.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.1,v 1.12 2010/11/16 09:16:08 tg Exp $
 .\"-
 .\" Copyright © 2009, 2010
 .\"	Thorsten Glaser <tg@mirbsd.org>
@@ -47,7 +47,7 @@
 .el .xD \\$1 \\$2 \\$3 \\$4 \\$5 \\$6 \\$7 \\$8
 ..
 .\"-
-.Dd $Mdocdate: March 3 2010 $
+.Dd $Mdocdate: November 16 2010 $
 .Dt KWALLETCLI 1
 .Os
 .Sh NAME
@@ -66,7 +66,7 @@
 The
 .Nm
 utility is a command line interface to KWallet.
-It will only work if KDE is running (DCOP).
+It will only work if KDE is running (DCOP) and reachable (via X11).
 .Nm
 can be used to get password entries from the Wallet,
 or to write them there.
@@ -140,6 +140,11 @@ The exit codes 1 and 4, on reading, are not fatal; they merely indicate
 that the folder or entry specified does not exist.
 The other errors are fatal and may be used to indicate the user that the
 KWallet should not be used any more during the current session.
+.Sh ENVIRONMENT
+.Bl -tag -width DISPLAY
+.It Ev DISPLAY
+The X11 display to use for communicating with the KDE Wallet.
+.El
 .Sh SEE ALSO
 .Xr kwalletcli_getpin 1
 .Sh AUTHORS

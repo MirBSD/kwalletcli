@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletaskpass.1,v 1.4 2010/11/16 09:11:15 tg Exp $
+.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletaskpass.1,v 1.5 2010/11/16 09:16:08 tg Exp $
 .\"-
 .\" Copyright © 2009, 2010
 .\"	Thorsten Glaser <tg@mirbsd.org>
@@ -87,10 +87,10 @@ or \*(Gt1 if an error occured.
 .Sh ENVIRONMENT
 .Bl -tag -width PINENTRY
 .It Ev DISPLAY
-The X11 server to use.
-If this is unset or empty, calling
+The X11 display to use for child processes.
+If this is unset or empty,
 .Nm kwalletcli
-is not attempted, because the KDE Wallet needs X11.
+will not be called.
 .It Ev PINENTRY
 The
 .Nm pinentry
