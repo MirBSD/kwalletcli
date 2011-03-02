@@ -1,7 +1,7 @@
 #!/usr/bin/env mksh
-rcsid='$MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet,v 1.8 2010/03/03 11:17:51 tg Exp $'
+rcsid='$MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet,v 1.9 2011/03/02 22:49:16 tg Exp $'
 #-
-# Copyright © 2009, 2010
+# Copyright © 2009, 2010, 2011
 #	Thorsten Glaser <tg@mirbsd.org>
 #
 # Provided that these terms and disclaimer and all copyright notices
@@ -123,6 +123,11 @@ for arg in "$@"; do
 		args[${#args[*]}]=$arg
 	fi
 done
+
+if [[ -z $DISPLAY ]]; then
+	log "since DISPLAY is not set, replacing with: ${PINENTRY:-pinentry}"
+	PINENTRY_KWALLET=set exec "${PINENTRY:-pinentry}" "${args[@]}"
+fi
 
 PINENTRY_KWALLET=set "${PINENTRY:-pinentry}" "${args[@]}" |&
 log "starting coproc $!: PINENTRY_KWALLET=set '${PINENTRY:-pinentry}' args"
