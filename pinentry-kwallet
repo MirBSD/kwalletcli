@@ -1,5 +1,5 @@
 #!/usr/bin/env mksh
-rcsid='$MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet,v 1.9 2011/03/02 22:49:16 tg Exp $'
+rcsid='$MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet,v 1.10 2011/03/02 22:49:59 tg Exp $'
 #-
 # Copyright © 2009, 2010, 2011
 #	Thorsten Glaser <tg@mirbsd.org>
@@ -58,7 +58,7 @@ function log {
 
 if [[ -n $PINENTRY_KWALLET ]]; then
 	io_p_out ERR 7 trying to call me recursively
-	while io_s_in line; do
+	while io_p_in line; do
 		io_p_out ERR 7 trying to call me recursively
 	done
 	exit 1
