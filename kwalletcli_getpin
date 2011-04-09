@@ -1,7 +1,7 @@
 #!/usr/bin/env mksh
-# $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin,v 1.14 2010/01/11 15:19:09 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin,v 1.15 2011/04/09 19:00:08 tg Exp $
 #-
-# Copyright © 2009, 2010
+# Copyright © 2009, 2010, 2011
 #	Thorsten Glaser <t.glaser@tarent.de>
 #
 # Provided that these terms and disclaimer and all copyright notices
@@ -102,6 +102,8 @@ asktext='Hast Du das Paßwort?'
 askprompt='Code:'
 askerror=''
 askbool=0
+btnyes=OK
+btnno=Cancel
 
 while getopts 'bEe:hp:qt:' ch; do
 	case $ch {
@@ -139,7 +141,7 @@ fi
 if (( !got_pe )); then
 	thetext=
 	sep=
-	if [[ -n $askerror ]]; then
+	(( askbool )) || if [[ -n $askerror ]]; then
 		thetext="*ERROR*: $(toutf8 "$askerror")"
 		sep=$nl$nl
 	fi
@@ -147,18 +149,22 @@ if (( !got_pe )); then
 		thetext=$thetext$sep$(toutf8 "$asktext")
 		sep=$nl$nl
 	fi
-	[[ -n $askprompt ]] && thetext=$thetext$sep$(toutf8 "$askprompt")
+	(( askbool )) || if [[ -n $askprompt ]]; then
+		thetext=$thetext$sep$(toutf8 "$askprompt")
+	fi
 
 	whence -p xmessage >&- || unset DISPLAY
 	if (( askbool )) && [[ -n $DISPLAY ]]; then
-		LC_ALL=C xmessage -nearmouse -buttons Yes,No -default Yes \
-		    "$(tolat1 "$thetext")"
+		LC_ALL=C xmessage -nearmouse -buttons "$btnyes","$btnno" \
+		    -default "$btnyes" "$(tolat1 "$thetext")"
 		rc=$?
 		(( rc == 101 )) && exit 0
 		(( rc == 102 )) && exit 1
 		die 3 xmessage errored out
 	fi
-	if [[ -n $askprompt ]]; then
+	if (( askbool )); then
+		thetext="$thetext$nl${nl}[Y/N] "
+	elif [[ -n $askprompt ]]; then
 		thetext="$thetext "
 	else
 		thetext=$thetext$nl
