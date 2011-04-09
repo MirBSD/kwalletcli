@@ -23,7 +23,7 @@
 #include "kwalletcli.h"
 
 const char __rcsid_charconv_c[] =
-    "$MirOS: contrib/hosted/tg/code/kwalletcli/charconv.c,v 1.2 2011/04/09 22:24:32 tg Exp $";
+    "$MirOS: contrib/hosted/tg/code/kwalletcli/charconv.c,v 1.3 2011/04/09 22:33:49 tg Exp $";
 
 /* From MirOS: contrib/hosted/tg/code/any2utf8/wide.c,v 1.1 2009/08/02 17:12:07 tg Exp */
 
@@ -92,7 +92,7 @@ utf_8to32(const char *src, unsigned int *dst)
 		wc = (wc & 0x01) << 30;
 	}
 
-	while (/* CONSTCOND */ 1) {
+	while (count) {
 		if (((c = *s++) & 0xC0) != 0x80)
 			return (UTFCONV_ERROR);
 		wc |= (c & 0x3F) << (6 * --count);
