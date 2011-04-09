@@ -26,7 +26,12 @@
 #include "kwalletcli.h"
 
 const char __rcsid_main_c[] =
-    "$MirOS: contrib/hosted/tg/code/kwalletcli/main.c,v 1.8 2011/04/09 20:43:45 tg Exp $";
+    "$MirOS: contrib/hosted/tg/code/kwalletcli/main.c,v 1.9 2011/04/09 21:44:56 tg Exp $";
+
+#define WOCTET_MASK	(0x7FFFFF80)
+#define WOCTET_VALUE	(0x0000EF80)
+#define iswoctet(wc)	(((wc) & WOCTET_MASK) == WOCTET_VALUE)
+
 
 int
 main(int argc, char *argv[])
@@ -91,13 +96,66 @@ main(int argc, char *argv[])
 	    KWALLETCLI_H) == -1)
 		vers = NULL;
 
+	if (kw_pass) {
+		unsigned int wc;
+		size_t n;
+		char *dst, *cp;
+		const char *src = kw_pass;
+
+		/* recode kw_pass from binary/utf-8 to safe utf-8 */
+		if ((dst = cp = malloc(strlen(kw_pass) * 3 + 1)) == NULL)
+			abort();
+
+		do {
+			n = utf_8to32(src, &wc);
+			if (n == UTFCONV_ERROR || iswoctet(wc)) {
+				/* assert: 0x80 <= *src <= 0xFF */
+				wc = *((const unsigned char *)src);
+				wc |= WOCTET_VALUE;
+				n = 1;
+			}
+			src += n;
+			n = utf_32to8(dst, wc);
+			dst += n;
+		} while (wc);
+
+		kw_pass = cp;
+	}
+
 	if (quiet)
 		fclose(stderr);
 	rv = kw_io(kw_folder, kw_entry, &kw_pass, vers ? vers : "");
 	switch (rv) {
-	case KWE_OK_GET:
+	case KWE_OK_GET: {
+		unsigned int wc;
+		size_t n;
+		char *dst, *cp;
+		const char *src = kw_pass;
+
+		/* recode kw_pass from safe utf-8 to binary/utf-8 */
+		if ((dst = cp = malloc(strlen(kw_pass) + 1)) == NULL)
+			abort();
+
+		do {
+			n = utf_8to32(src, &wc);
+			if (n == UTFCONV_ERROR)
+				/* should never happen */
+				goto print_kw_pass;
+			src += n;
+			if (iswoctet(wc)) {
+				wc &= 0xFF;
+				*((unsigned char *)dst++) = wc;
+			} else {
+				n = utf_32to8(dst, wc);
+				dst += n;
+			}
+		} while (wc);
+
+		kw_pass = cp;
+ print_kw_pass:
 		printf("%s", kw_pass);
 		break;
+	}
 	case KWE_NOWALLET:
 		if (!quiet)
 			fprintf(stderr, "cannot open wallet\n");

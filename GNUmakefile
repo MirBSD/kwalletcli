@@ -1,6 +1,6 @@
-# $MirOS: contrib/hosted/tg/code/kwalletcli/GNUmakefile,v 1.10 2010/10/31 10:43:02 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/GNUmakefile,v 1.11 2011/04/09 21:44:56 tg Exp $
 #-
-# Copyright © 2009
+# Copyright © 2009, 2011
 #	Thorsten Glaser <t.glaser@tarent.de>
 #
 # Provided that these terms and disclaimer and all copyright notices
@@ -27,8 +27,8 @@ MANMODE?=	444
 INSTALL_STRIP?=	-s
 
 PROG=		kwalletcli
-SRCS=		main.c
-OBJS=		main.o
+SRCS=		charconv.c main.c
+OBJS=		charconv.o main.o
 
 KDE_VER:=	3
 ifeq (${KDE_VER},3)

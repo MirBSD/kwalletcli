@@ -1,6 +1,6 @@
-# $MirOS: contrib/hosted/tg/code/kwalletcli/BSDmakefile,v 1.12 2010/10/31 10:43:01 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/BSDmakefile,v 1.13 2011/04/09 21:44:55 tg Exp $
 #-
-# Copyright © 2009, 2010
+# Copyright © 2009, 2010, 2011
 #	Thorsten Glaser <tg@mirbsd.org>
 #
 # Provided that these terms and disclaimer and all copyright notices
@@ -19,7 +19,7 @@
 # of said person’s immediate fault when using the work as intended.
 
 PROG=		kwalletcli
-SRCS=		main.c
+SRCS=		charconv.c main.c
 SCRIPTS=	kwalletaskpass kwalletcli_getpin pinentry-kwallet
 MAN=		${PROG}.1 ${SCRIPTS:=.1}
 BINDIR?=	${BSD_PREFIX}/bin

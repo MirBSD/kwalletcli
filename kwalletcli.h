@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2009
+ * Copyright (c) 2009, 2011
  *	Thorsten Glaser <tg@mirbsd.org>
  *
  * Provided that these terms and disclaimer and all copyright notices
@@ -19,7 +19,14 @@
  */
 
 #ifndef KWALLETCLI_H
-#define KWALLETCLI_H	"$MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.h,v 1.5 2009/07/24 12:21:14 tg Exp $"
+#define KWALLETCLI_H	"$MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.h,v 1.6 2011/04/09 21:44:56 tg Exp $"
+
+
+#if defined(HAVE_ATTRIBUTE_BOUNDED) && HAVE_ATTRIBUTE_BOUNDED
+#define MKSH_A_BOUNDED(x,y,z)	__attribute__((__bounded__ (x, y, z)))
+#else
+#define MKSH_A_BOUNDED(x,y,z)	/* nothing */
+#endif
 
 
 #ifdef __cplusplus
@@ -45,6 +52,16 @@ int kw_io(const char *, const char *, const char **, const char *);
 #define KWE_ERRENTRY	6
 #define KWE_OK_SET	7	/* uses errorlevel 0 */
 #define KWE_ERR_SET	8
+
+
+/* exported by charconv.c */
+
+/* recode strings between UTF-8 and UCS-32 */
+size_t utf_8to32(const char *, unsigned int *);
+size_t utf_32to8(char *, unsigned int)
+    MKSH_A_BOUNDED(__minbytes__, 1, 6);
+#define UTFCONV_ERROR	((size_t)31)
+
 
 #ifdef __cplusplus
 }

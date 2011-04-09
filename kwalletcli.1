@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.1,v 1.13 2011/04/09 20:43:44 tg Exp $
+.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.1,v 1.14 2011/04/09 21:44:56 tg Exp $
 .\"-
 .\" Copyright © 2009, 2010, 2011
 .\"	Thorsten Glaser <tg@mirbsd.org>
@@ -112,8 +112,10 @@ and print it to standard output as-is, without any
 trailing newline.
 .Pp
 All input and output is assumed to be in UTF-8.
-This is especially true for folder and entry names,
-as well as the password string.
+The password string (whether read from standard input or command line)
+is now converted from
+.Dq possibly UTF-8 but binary transparent
+to standards-conformant UTF-8 for the Qt side, and back upon reading out.
 .Sh RETURN VALUES
 The
 .Nm
