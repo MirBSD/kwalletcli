@@ -1,5 +1,5 @@
 #!/usr/bin/env mksh
-# $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin,v 1.16 2011/04/09 19:08:39 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin,v 1.17 2011/04/09 19:19:41 tg Exp $
 #-
 # Copyright © 2009, 2010, 2011
 #	Thorsten Glaser <t.glaser@tarent.de>
@@ -86,8 +86,8 @@ function tolat1 {
 }
 
 function usage {
-	print -u2 "Usage: kwalletcli_getpin [-q] [-E | -e errortext]" \
-	    "[-b | -m | -p prompt] [-t desctext]"
+	print -u2 "Usage:\tkwalletcli_getpin [-q] [-b | -m | -p prompt]"
+	print -u2 "\t[-E | -e errortext] [-N NoBtn] [-t desctext] [-Y YesBtn]"
 	print -u2 "Returns: 0=ok (pw on stdout), 1=cancel, 2+=error"
 	exit 2
 }
@@ -102,18 +102,20 @@ asktext='Hast Du das Paßwort?'
 askprompt='Code:'
 askerror=''
 askbool=0
-btnyes=OK
-btnno=Cancel
+btnyes=
+btnno=
 
-while getopts 'bEe:hmp:qt:' ch; do
+while getopts 'bEe:hmN:p:qt:Y:' ch; do
 	case $ch {
 	(b)	askbool=1 ;;
 	(E)	askerror='' ;;
 	(e)	askerror=$OPTARG ;;
 	(m)	askbool=2 ;;
+	(N)	btnno=$OPTARG ;;
 	(p)	askprompt=$OPTARG ;;
 	(q)	quiet=1 ;;
 	(t)	asktext=$OPTARG ;;
+	(Y)	btnyes=$OPTARG ;;
 	(*)	usage ;;
 	}
 done
@@ -156,19 +158,19 @@ if (( !got_pe )); then
 
 	whence -p xmessage >&- || unset DISPLAY
 	if (( askbool )) && [[ -n $DISPLAY ]]; then
-		buttons=$btnyes,$btnno
-		(( askbool == 2 )) && buttons=$btnyes
+		buttons=${btnyes:-OK},${btnno:-Cancel}
+		(( askbool == 2 )) && buttons=${btnyes:-OK}
 		LC_ALL=C xmessage -nearmouse -buttons "$buttons" \
-		    -default "$btnyes" "$(tolat1 "$thetext")"
+		    -default "${btnyes:-OK}" "$(tolat1 "$thetext")"
 		rc=$?
 		(( rc == 101 )) && exit 0
 		(( rc == 102 )) && exit 1
 		die 3 xmessage errored out
 	fi
 	if (( askbool == 2 )); then
-		thetext="$thetext$nl${nl}[OK] "
+		thetext="$thetext$nl${nl}[OK${btnyes:+=$btnyes}] "
 	elif (( askbool )); then
-		thetext="$thetext$nl${nl}[Y/N] "
+		thetext="$thetext$nl${nl}[Y${btnyes:+=$btnyes}|N${btnno:+=$btnno}] "
 	elif [[ -n $askprompt ]]; then
 		thetext="$thetext "
 	else
@@ -200,6 +202,9 @@ fi
 [[ -n $asktext ]] && checkline "SETDESC $(toutf8 "$asktext")"
 [[ -n $askprompt ]] && checkline "SETPROMPT $(toutf8 "$askprompt")"
 [[ -n $askerror ]] && checkline "SETERROR $(toutf8 "$askerror")"
+
+[[ -n $btnyes ]] && checkline "SETOK $(toutf8 "$btnyes")"
+[[ -n $btnno ]] && checkline "SETCANCEL $(toutf8 "$btnno")"
 
 if (( askbool == 2 )); then
 	print -p MESSAGE

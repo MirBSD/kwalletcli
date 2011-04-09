@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin.1,v 1.11 2011/04/09 19:08:40 tg Exp $
+.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin.1,v 1.12 2011/04/09 19:19:41 tg Exp $
 .\"-
 .\" Copyright © 2009, 2011
 .\"	Thorsten Glaser <tg@mirbsd.org>
@@ -56,9 +56,12 @@
 .Sh SYNOPSIS
 .Nm
 .Op Fl q
-.Op Fl E | e Ar errortext
 .Op Fl b | m | p Ar prompt
+.Op Fl E | e Ar errortext
+.br
+.Op Fl N Ar NoText
 .Op Fl t Ar desctext
+.Op Fl Y Ar YesText
 .Sh DESCRIPTION
 The
 .Nm
@@ -95,6 +98,12 @@ displaying a dialogue box with a red X icon indicating
 that this is a retry question.
 .It Fl m
 Display a message (one-button query) instead of asking.
+.It Fl N Ar NoText
+Use
+.Ar NoText
+instead of
+.Ic Cancel
+for the text of the abort button, if any.
 .It Fl p Ar prompt
 Set the small descriptive text shown in front of the input field
 .Pq Dq the Prompt
@@ -107,6 +116,12 @@ Set the descriptive text
 .Pq the input challenge
 to
 .Ar desctxt .
+.It Fl Y Ar YesText
+Use
+.Ar YesText
+instead of
+.Ic OK
+for the text of the confirm button.
 .El
 .Pp
 All input and output is assumed to be in UTF-8.
