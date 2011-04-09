@@ -1,6 +1,6 @@
-.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin.1,v 1.10 2010/03/03 09:19:23 tg Exp $
+.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin.1,v 1.11 2011/04/09 19:08:40 tg Exp $
 .\"-
-.\" Copyright © 2009
+.\" Copyright © 2009, 2011
 .\"	Thorsten Glaser <tg@mirbsd.org>
 .\"
 .\" Provided that these terms and disclaimer and all copyright notices
@@ -47,7 +47,7 @@
 .el .xD \\$1 \\$2 \\$3 \\$4 \\$5 \\$6 \\$7 \\$8
 ..
 .\"-
-.Dd $Mdocdate: March 3 2010 $
+.Dd $Mdocdate: April 9 2011 $
 .Dt KWALLETCLI_GETPIN 1
 .Os
 .Sh NAME
@@ -57,7 +57,7 @@
 .Nm
 .Op Fl q
 .Op Fl E | e Ar errortext
-.Op Fl b | p Ar prompt
+.Op Fl b | m | p Ar prompt
 .Op Fl t Ar desctext
 .Sh DESCRIPTION
 The
@@ -75,7 +75,7 @@ is not empty but points to a non-existing or failing programme,
 is not called.
 Instead,
 .Xr xmessage 1
-is used for boolean queries if
+is used for boolean queries and messages if
 .Ev DISPLAY
 is set; otherwise,
 .Nm
@@ -93,6 +93,8 @@ Set the error text to
 .Ar errtxt ,
 displaying a dialogue box with a red X icon indicating
 that this is a retry question.
+.It Fl m
+Display a message (one-button query) instead of asking.
 .It Fl p Ar prompt
 Set the small descriptive text shown in front of the input field
 .Pq Dq the Prompt
@@ -159,3 +161,14 @@ Default:
 was written by
 .An Thorsten Glaser Aq tg@mirbsd.org
 mostly for tarent GmbH.
+.Sh BUGS
+Some
+.Nm pinentry
+programmes may not support messages correctly and display
+them as boolean queries instead.
+.Pp
+Some implementations display labels with the wrong charset.
+.Pp
+Neither of these two problems is an issue in
+.Nm
+but a bug of the backend implementation.
