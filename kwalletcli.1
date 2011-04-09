@@ -1,6 +1,6 @@
-.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.1,v 1.12 2010/11/16 09:16:08 tg Exp $
+.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.1,v 1.13 2011/04/09 20:43:44 tg Exp $
 .\"-
-.\" Copyright © 2009, 2010
+.\" Copyright © 2009, 2010, 2011
 .\"	Thorsten Glaser <tg@mirbsd.org>
 .\"
 .\" Provided that these terms and disclaimer and all copyright notices
@@ -47,7 +47,7 @@
 .el .xD \\$1 \\$2 \\$3 \\$4 \\$5 \\$6 \\$7 \\$8
 ..
 .\"-
-.Dd $Mdocdate: November 16 2010 $
+.Dd $Mdocdate: April 9 2011 $
 .Dt KWALLETCLI 1
 .Os
 .Sh NAME
@@ -87,6 +87,7 @@ Mandatory.
 Display the usage.
 .It Fl P
 Read the password to write from standard input.
+Currently limited to 65535 octets.
 .It Fl p Ar password
 Write
 .Ar password
@@ -111,6 +112,8 @@ and print it to standard output as-is, without any
 trailing newline.
 .Pp
 All input and output is assumed to be in UTF-8.
+This is especially true for folder and entry names,
+as well as the password string.
 .Sh RETURN VALUES
 The
 .Nm

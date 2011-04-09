@@ -1,5 +1,5 @@
 /*-
- * Copyright © 2009
+ * Copyright © 2009, 2011
  *	Thorsten Glaser <t.glaser@tarent.de>
  *
  * Provided that these terms and disclaimer and all copyright notices
@@ -26,7 +26,7 @@
 #include "kwalletcli.h"
 
 const char __rcsid_main_c[] =
-    "$MirOS: contrib/hosted/tg/code/kwalletcli/main.c,v 1.7 2009/07/24 12:21:14 tg Exp $";
+    "$MirOS: contrib/hosted/tg/code/kwalletcli/main.c,v 1.8 2011/04/09 20:43:45 tg Exp $";
 
 int
 main(int argc, char *argv[])
@@ -45,10 +45,10 @@ main(int argc, char *argv[])
 			break;
 		case 'P': {
 			char *cp;
-			size_t n = 2047;
+			size_t n = 65536;
 			ssize_t cnt;
 
-			if ((kw_pass = cp = malloc(2048)) == NULL)
+			if ((kw_pass = cp = malloc(n--)) == NULL)
 				abort();
 			do {
 				cnt = read(STDIN_FILENO, cp, n);
