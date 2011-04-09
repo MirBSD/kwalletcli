@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin.1,v 1.13 2011/04/09 19:26:11 tg Exp $
+.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin.1,v 1.14 2011/04/09 19:28:59 tg Exp $
 .\"-
 .\" Copyright © 2009, 2011
 .\"	Thorsten Glaser <tg@mirbsd.org>
@@ -68,8 +68,9 @@ The
 utility is a shell wrapper speaking to
 .Nm pinentry
 using the Assuan protocol.
-It will ask the user for a password and print it,
+It will ask the user for a passphrase and print it,
 without any trailing newline, to standard output.
+There are options for asking a boolean question or displaying a message.
 .Pp
 If
 .Ev PINENTRY
@@ -131,10 +132,11 @@ All input and output is assumed to be in UTF-8.
 .Sh RETURN VALUES
 The
 .Nm
-utility exits 0 on success, 1 if the password input
+utility exits 0 on success, 1 if the passphrase input
 was cancelled by the user, or \*(Gt1 if an error occurred.
 Confirmation (boolean) error codes are 0 for Yes,
 1 for No, or \*(Gt1 if an error occurred.
+Messages return \*(Gt0 if an error occurred, 0 otherwise.
 .Sh ENVIRONMENT
 .Bl -tag -width LC_MESSAGES
 .It Ev DISPLAY
