@@ -21,12 +21,13 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 
 #include "kwalletcli.h"
 
 const char __rcsid_main_c[] =
-    "$MirOS: contrib/hosted/tg/code/kwalletcli/main.c,v 1.9 2011/04/09 21:44:56 tg Exp $";
+    "$MirOS: contrib/hosted/tg/code/kwalletcli/main.c,v 1.10 2011/04/09 22:24:32 tg Exp $";
 
 #define WOCTET_MASK	(0x7FFFFF80)
 #define WOCTET_VALUE	(0x0000EF80)
