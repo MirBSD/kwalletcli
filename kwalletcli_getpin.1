@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin.1,v 1.12 2011/04/09 19:19:41 tg Exp $
+.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin.1,v 1.13 2011/04/09 19:26:11 tg Exp $
 .\"-
 .\" Copyright © 2009, 2011
 .\"	Thorsten Glaser <tg@mirbsd.org>
@@ -83,7 +83,10 @@ is used for boolean queries and messages if
 is set; otherwise,
 .Nm
 uses simple terminal I/O on
-.Ev GPG_TTY .
+.Ev GPG_TTY
+using
+.Xr stty 1
+to disable echo of terminal input for passphrase queries.
 .Pp
 The options are as follows:
 .Bl -tag -width xPxdesctxt
