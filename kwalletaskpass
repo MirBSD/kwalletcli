@@ -1,7 +1,7 @@
 #!/usr/bin/env mksh
-# $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletaskpass,v 1.4 2010/11/16 09:11:15 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletaskpass,v 1.5 2011/04/09 20:03:48 tg Exp $
 #-
-# Copyright © 2009, 2010
+# Copyright © 2009, 2010, 2011
 #	Thorsten Glaser <tg@mirbsd.org>
 #
 # Provided that these terms and disclaimer and all copyright notices
@@ -31,14 +31,22 @@ fi
 
 rv=1
 trywallet=0
-if [[ -n $DISPLAY && $1 = @(Enter passphrase for )* ]]; then
+if [[ -n $DISPLAY && $1 = 'Enter passphrase for '* ]]; then
 	trywallet=1
 	pw=$(kwalletcli -q -f kwalletaskpass -e "${1#Enter }")
 	rv=$?
 fi
 
+# whitelist of known binary queries
+barg=
+[[ $1 = 'Allow shared connection to '* || \
+   $1 = 'Terminate shared connection to '* || \
+   $1 = 'Open '*' on '*'?' || \
+   $1 = 'Allow forward to '* || \
+   $1 = 'Allow use of key '* ]] && barg=-b
+
 if (( rv )); then
-	pw=$(kwalletcli_getpin -q -t "$1")
+	pw=$(kwalletcli_getpin -q $barg -t "$1")
 	rv=$?
 	if (( rv == 0 && trywallet )); then
 		q=${1#Enter }

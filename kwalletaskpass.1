@@ -1,6 +1,6 @@
-.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletaskpass.1,v 1.5 2010/11/16 09:16:08 tg Exp $
+.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletaskpass.1,v 1.6 2011/04/09 20:03:48 tg Exp $
 .\"-
-.\" Copyright © 2009, 2010
+.\" Copyright © 2009, 2010, 2011
 .\"	Thorsten Glaser <tg@mirbsd.org>
 .\"
 .\" Provided that these terms and disclaimer and all copyright notices
@@ -47,7 +47,7 @@
 .el .xD \\$1 \\$2 \\$3 \\$4 \\$5 \\$6 \\$7 \\$8
 ..
 .\"-
-.Dd $Mdocdate: November 16 2010 $
+.Dd $Mdocdate: April 9 2011 $
 .Dt KWALLETASKPASS 1
 .Os
 .Sh NAME
@@ -76,8 +76,15 @@ otherwise.
 If the user specifies a passphrase,
 .Xr kwalletcli_getpin 1
 is run again to ask if the passphrase should be stored in the KWallet.
-If a confirmation instead of a passphrase is requested, it is merely relayed to
+If anything other than a key passphrase is requested, it is merely relayed to
 .Xr kwalletcli_getpin 1 .
+Some requests are known to require a boolean answer and are relayed
+using the boolean query flag; all others are relayed using a PIN query.
+.Xr ssh 1
+accepts either the literal word
+.Dq yes
+.Pq case-insensitively matched
+or an empty answer (both only when using the OK button) as confirmation.
 .Pp
 There are currently no options.
 .Sh RETURN VALUES
