@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet.1,v 1.6 2011/03/02 22:49:17 tg Exp $
+.\" $MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet.1,v 1.7 2011/04/09 20:21:16 tg Exp $
 .\"-
 .\" Copyright © 2009, 2010, 2011
 .\"	Thorsten Glaser <tg@mirbsd.org>
@@ -47,7 +47,7 @@
 .el .xD \\$1 \\$2 \\$3 \\$4 \\$5 \\$6 \\$7 \\$8
 ..
 .\"-
-.Dd $Mdocdate: March 2 2011 $
+.Dd $Mdocdate: April 9 2011 $
 .Dt PINENTRY\-KWALLET 1
 .Os
 .Sh NAME
@@ -73,6 +73,8 @@ and looks up the passphrases requested in the KWallet first, falling back to
 .Nm pinentry
 only if not found.
 The user is given the option to store it in the KWallet afterwards.
+Negative answers to this are also stored in the KWallet to avoid
+asking each time.
 .Pp
 .Nm
 .Pq like other pinentry variants

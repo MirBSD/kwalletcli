@@ -1,5 +1,5 @@
 #!/usr/bin/env mksh
-rcsid='$MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet,v 1.10 2011/03/02 22:49:59 tg Exp $'
+rcsid='$MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet,v 1.11 2011/04/09 20:21:15 tg Exp $'
 #-
 # Copyright © 2009, 2010, 2011
 #	Thorsten Glaser <tg@mirbsd.org>
@@ -146,12 +146,16 @@ x_prompt=
 x_errtxt=
 
 function getit {
-	local type=$1 key=〈${x_prompt}〉$x_dsctxt pw rv tw=0 d errcnt
+	local type=$1 key=〈${x_prompt}〉$x_dsctxt pw rv tw=0 d errcnt blst=0
 
 	copyline=0
 	# the errcnt handling is a little tricky, because GnuPG v2 does
 	# not reuse the pinentry session (suckers, unable to... *rant*)
-	if pw=$(kwalletcli -q -f pinentry-kwallet -e "$type-e-$key"); then
+	if pw=$(kwalletcli -q -f pinentry-kwallet -e "$type-B-$key") && \
+	    [[ $pw = yes* ]]; then
+		log "blacklisted"
+		blst=1
+	elif pw=$(kwalletcli -q -f pinentry-kwallet -e "$type-e-$key"); then
 		log "read errcnt: '$pw'"
 		set -A errcnt -- $pw
 		d=$(date -u +'%s')
@@ -159,14 +163,14 @@ function getit {
 	else
 		log "read errcnt failed"
 	fi
-	[[ -z $x_errtxt ]] || (( errcnt[1]++ ))
-	if (( errcnt[1] )); then
+	(( blst )) || [[ -z $x_errtxt ]] || (( errcnt[1]++ ))
+	(( blst )) || if (( errcnt[1] )); then
 		errcnt[0]=${d:-$(date -u +'%s')}
 		kwalletcli -q -f pinentry-kwallet -e "$type-e-$key" \
 		    -p "${errcnt[*]}"
 		log "write errcnt: '${errcnt[*]}' -> $?"
 	fi
-	if (( errcnt[1] < 2 )); then
+	(( blst )) || if (( errcnt[1] < 2 )); then
 		pw=$(kwalletcli -q -f pinentry-kwallet -e "$type-v-$key")
 		rv=$?
 		log "read pass $rv: '$pw'"
@@ -217,12 +221,15 @@ function getit {
 		fi
 		[[ $resp = OK@(| *) ]] && tw=1
 	fi
-	(( tw )) && if kwalletcli_getpin -qbt "Do you want to store your response for description
+	(( tw && !blst )) && if kwalletcli_getpin -q -b \
+	    -t "Do you want to store your response for description
 '$x_dsctxt',
 prompt '$x_prompt' in the KDE Wallet?"; then
 		kwalletcli -q -f pinentry-kwallet -e "$type-v-$key" -p "$pw"
 		log "want store: yes, pw '$pw' -> $?"
 	else
+		# create blacklist entry for this answer
+		kwalletcli -q -f pinentry-kwallet -e "$type-B-$key" -p yes
 		log "want store: no"
 	fi
 	[[ $type = pass ]] && [[ -n $pw ]] && io_p_out -r "D $pw"
