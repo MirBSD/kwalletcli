@@ -1,4 +1,4 @@
-# $MirOS: contrib/hosted/tg/code/kwalletcli/BSDmakefile,v 1.13 2011/04/09 21:44:55 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/BSDmakefile,v 1.14 2011/04/09 21:45:58 tg Exp $
 #-
 # Copyright © 2009, 2010, 2011
 #	Thorsten Glaser <tg@mirbsd.org>
@@ -34,7 +34,7 @@ KDE_INCS?=	-I/usr/include/qt4 -I/usr/include/qt4/QtCore
 SRCS+=		kwif4.cc
 LDADD+=		-lkdeui -lkdecore -lQtCore
 .else
-.  error unknown KDE_VER
+.  error unknown KDE_VER; valid: 3 4
 .endif
 
 CPPFLAGS+=	${KDE_INCS} -D_GNU_SOURCE
