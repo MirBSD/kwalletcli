@@ -1,5 +1,5 @@
 #!/usr/bin/env mksh
-# $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin,v 1.20 2011/05/10 08:28:44 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin,v 1.21 2011/05/10 09:05:17 tg Exp $
 #-
 # Copyright © 2009, 2010, 2011
 #	Thorsten Glaser <t.glaser@tarent.de>
@@ -56,7 +56,7 @@ function toutf8 {
 		if (( (c & 0xFF80) == 0xEF80 )); then
 			(( c &= 0xFF ))
 		fi
-		if (( c < 32 || c == 1#% )); then
+		if (( c < 32 || c == 1#% || c == 1#_ )); then
 			let x=c
 			outtext=${outtext}%${x#16#}
 		elif (( c > 0x7E && c < 0xA0 )); then
