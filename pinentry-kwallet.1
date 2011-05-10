@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet.1,v 1.7 2011/04/09 20:21:16 tg Exp $
+.\" $MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet.1,v 1.8 2011/05/10 10:36:30 tg Exp $
 .\"-
 .\" Copyright © 2009, 2010, 2011
 .\"	Thorsten Glaser <tg@mirbsd.org>
@@ -47,7 +47,7 @@
 .el .xD \\$1 \\$2 \\$3 \\$4 \\$5 \\$6 \\$7 \\$8
 ..
 .\"-
-.Dd $Mdocdate: April 9 2011 $
+.Dd $Mdocdate: May 10 2011 $
 .Dt PINENTRY\-KWALLET 1
 .Os
 .Sh NAME
@@ -148,3 +148,10 @@ Default:
 was written by
 .An Thorsten Glaser Aq tg@mirbsd.org
 mostly for tarent GmbH.
+.Sh CAVEATS
+Some newer pinentry features, such as three-button operation,
+are not supported yet.
+.Pp
+Some commands, such as version inquiry, as passed through to
+the pinentry coprocess indiscriminately, which may lead to
+strange results, should the protocol change or extend.
