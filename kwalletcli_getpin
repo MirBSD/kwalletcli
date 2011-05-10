@@ -1,5 +1,5 @@
 #!/usr/bin/env mksh
-# $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin,v 1.19 2011/05/10 08:27:07 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin,v 1.20 2011/05/10 08:28:44 tg Exp $
 #-
 # Copyright © 2009, 2010, 2011
 #	Thorsten Glaser <t.glaser@tarent.de>
@@ -131,9 +131,16 @@ fi
 [[ -n $PINENTRY ]] || PINENTRY=pinentry
 if "${PINENTRY%-kwallet}" --version >/dev/null 2>&1; then
 	"${PINENTRY%-kwallet}" "${pe_args[@]}" |&
+	subpid=$?
 	read -p res || die 3 pinentry died
 	[[ $res = OK@(| *) ]] || die 4 "got '$res' for '$*'"
 	got_pe=1
+	trap "kill $subpid; die 6 caught SIGHUP" 1
+	trap "kill $subpid; die 6 caught SIGINT" 2
+	trap "kill $subpid; die 6 caught SIGQUIT" 3
+	trap "kill $subpid; die 6 caught SIGTRAP" 5
+	trap "kill $subpid; die 6 caught SIGPIPE" 13
+	trap "kill $subpid; die 6 caught SIGTERM" 15
 else
 	got_pe=0
 fi
