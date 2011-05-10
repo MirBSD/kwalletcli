@@ -1,5 +1,5 @@
 #!/usr/bin/env mksh
-rcsid='$MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet,v 1.14 2011/05/10 09:29:59 tg Exp $'
+rcsid='$MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet,v 1.15 2011/05/10 10:26:38 tg Exp $'
 #-
 # Copyright © 2009, 2010, 2011
 #	Thorsten Glaser <tg@mirbsd.org>
@@ -130,10 +130,12 @@ if [[ -z $DISPLAY ]]; then
 fi
 
 PINENTRY_KWALLET=set "${PINENTRY:-pinentry}" "${args[@]}" |&
-log "starting coproc $!: PINENTRY_KWALLET=set '${PINENTRY:-pinentry}' args"
+copid=$?
+log "starting coproc $copid: PINENTRY_KWALLET=set '${PINENTRY:-pinentry}' args"
 io_s_in resp || resp='ERR 14 no coprocess'
 if [[ $resp = OK@(| *) ]]; then
 	have_sub=1
+	trap "kill $copid; exit 255" 1 2 3 5 13 15
 else
 	have_sub=0
 	exec 3>&p; exec 3>&-
