@@ -1,5 +1,5 @@
 #!/usr/bin/env mksh
-# $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin,v 1.18 2011/04/09 19:26:10 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin,v 1.19 2011/05/10 08:27:07 tg Exp $
 #-
 # Copyright © 2009, 2010, 2011
 #	Thorsten Glaser <t.glaser@tarent.de>
@@ -186,7 +186,7 @@ if (( !got_pe )); then
 		print -u2
 		stty echo
 		if (( rc )); then
-			exit $rc
+			exit 3
 		elif (( askbool == 2 )); then
 			exit 0
 		elif (( !askbool )); then
