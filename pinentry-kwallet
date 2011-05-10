@@ -1,5 +1,5 @@
 #!/usr/bin/env mksh
-rcsid='$MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet,v 1.13 2011/05/10 09:00:22 tg Exp $'
+rcsid='$MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet,v 1.14 2011/05/10 09:29:59 tg Exp $'
 #-
 # Copyright © 2009, 2010, 2011
 #	Thorsten Glaser <tg@mirbsd.org>
@@ -205,7 +205,10 @@ function getit {
 			pw=1
 			tw=1
 			;;
-		(ERR\ 128@(| *))
+		(ERR\ @(128|83886194|83886179)@(| *))
+			# 128 = not confirmed (hardy)
+			# 83886194 = not confirmed (wheezy)
+			# 83886179 = canceled (wheezy)
 			pw=0
 			tw=1
 			;;
@@ -252,7 +255,9 @@ while io_p_in line; do
 	(SETPROMPT\ *)
 		x_prompt=${line#SETPROMPT }
 		;;
-	(SETOK*|SETCANCEL*)
+	(SETTITLE@(| *))
+		;;
+	(SET@(OK|CANCEL|NOTOK)@(| *))
 		;;
 	(SETERROR)
 		x_errtxt=
@@ -286,7 +291,7 @@ while io_p_in line; do
 		LC_MESSAGES=${line#*=}
 		export LC_MESSAGES
 		;;
-	(OPTION*)
+	(OPTION\ *)
 		;;
 	(CONFIRM\ *)
 		(( quiet )) || print -ru2 "warning: unknown CONFIRM" \
@@ -308,6 +313,7 @@ while io_p_in line; do
 	(GETINFO\ version)
 		# undocumented, but used by GnuPG v2
 		# just copy it quietly
+		#XXX maybe return "ERR 103 unknown command"?
 		;;
 	(GETINFO\ *)
 		# undocumented, but used by GnuPG v2
