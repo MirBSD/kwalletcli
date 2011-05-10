@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin.1,v 1.14 2011/04/09 19:28:59 tg Exp $
+.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin.1,v 1.15 2011/05/10 10:35:56 tg Exp $
 .\"-
 .\" Copyright © 2009, 2011
 .\"	Thorsten Glaser <tg@mirbsd.org>
@@ -47,7 +47,7 @@
 .el .xD \\$1 \\$2 \\$3 \\$4 \\$5 \\$6 \\$7 \\$8
 ..
 .\"-
-.Dd $Mdocdate: April 9 2011 $
+.Dd $Mdocdate: May 10 2011 $
 .Dt KWALLETCLI_GETPIN 1
 .Os
 .Sh NAME
@@ -137,6 +137,26 @@ was cancelled by the user, or \*(Gt1 if an error occurred.
 Confirmation (boolean) error codes are 0 for Yes,
 1 for No, or \*(Gt1 if an error occurred.
 Messages return \*(Gt0 if an error occurred, 0 otherwise.
+.Pp
+A summary of the error codes follows:
+.Bl -tag -width X -compact
+.It 0
+Read password successfully.
+Boolean question returned Yes/OK.
+.It 1
+Boolean question returned No/Cancel.
+.It 2
+Wrong command line syntax.
+.It 3
+The process reading user input unexpectedly terminated or errored out.
+.It 4
+Unexpected result reading from pinentry.
+.It 5
+Unable to determine controlling tty, caller must set
+.Ev GPG_TTY .
+.It 6
+Caught SIGHUP, SIGINT, SIGQUIT, SIGTRAP, SIGPIPE, or SIGTERM.
+.El
 .Sh ENVIRONMENT
 .Bl -tag -width LC_MESSAGES
 .It Ev DISPLAY
