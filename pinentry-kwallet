@@ -1,5 +1,5 @@
 #!/usr/bin/env mksh
-rcsid='$MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet,v 1.12 2011/05/10 08:35:31 tg Exp $'
+rcsid='$MirOS: contrib/hosted/tg/code/kwalletcli/pinentry-kwallet,v 1.13 2011/05/10 09:00:22 tg Exp $'
 #-
 # Copyright © 2009, 2010, 2011
 #	Thorsten Glaser <tg@mirbsd.org>
@@ -34,7 +34,7 @@ function io_p_in {
 	local io_line
 	IFS= read -r io_line || return $?
 	(( iodebug )) && print -r -- "$$ <p $io_line" >>"$iodp"
-	eval $1=\$io_line
+	eval $1='${io_line%}'
 	return 0
 }
 function io_s_in {
@@ -237,6 +237,7 @@ prompt '$x_prompt' in the KDE Wallet?"; then
 }
 
 while io_p_in line; do
+	[[ -z $line || $line = '#'* ]] && continue
 	copyline=1
 	case $line {
 	(SETDESC)
@@ -295,6 +296,9 @@ while io_p_in line; do
 		io_p_out OK
 		break
 		;;
+	(NOP@(| *))
+		# copy quietly, in case of keepalive
+		;;
 	(GETINFO\ pid)
 		# undocumented, but used by GnuPG v2
 		io_p_out D $$
@@ -325,5 +329,10 @@ while io_p_in line; do
 		io_p_out OK
 	fi
 done
+if (( have_sub )); then
+	io_s_out BYE
+	io_s_in resp
+fi
+exec 2>/dev/null	# avoid "no coprocess" warnings
 exec 3>&p; exec 3>&-
 exit 0
