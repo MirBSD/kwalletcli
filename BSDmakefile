@@ -1,4 +1,4 @@
-# $MirOS: contrib/hosted/tg/code/kwalletcli/BSDmakefile,v 1.14 2011/04/09 21:45:58 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/BSDmakefile,v 1.15 2011/06/05 15:52:49 tg Exp $
 #-
 # Copyright © 2009, 2010, 2011
 #	Thorsten Glaser <tg@mirbsd.org>
@@ -47,6 +47,7 @@ afterinstall:
 
 .include <bsd.prog.mk>
 
+.if make(htman)
 # HTML manpage generation code (currently assumes the basenames
 # of all manpages to be generated are unique, unlike man(1, 7).
 HTMANMODE?=	local		# one of local or sectioned
@@ -75,3 +76,4 @@ ${_t:R}.htm: ${_s:R}.htm
 
 CLEANFILES+=	${HTMANS}
 htman: .PHONY ${HTMANS}
+.endif
