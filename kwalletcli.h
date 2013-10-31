@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2009, 2011
+ * Copyright (c) 2009, 2011, 2013
  *	Thorsten Glaser <tg@mirbsd.org>
  *
  * Provided that these terms and disclaimer and all copyright notices
@@ -19,11 +19,11 @@
  */
 
 #ifndef KWALLETCLI_H
-#define KWALLETCLI_H	"$MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.h,v 1.6 2011/04/09 21:44:56 tg Exp $"
+#define KWALLETCLI_H	"$MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.h,v 1.7 2013/10/31 20:05:50 tg Exp $"
 
 
 #if defined(HAVE_ATTRIBUTE_BOUNDED) && HAVE_ATTRIBUTE_BOUNDED
-#define MKSH_A_BOUNDED(x,y,z)	__attribute__((__bounded__ (x, y, z)))
+#define MKSH_A_BOUNDED(x,y,z)	__attribute__((__bounded__(x, y, z)))
 #else
 #define MKSH_A_BOUNDED(x,y,z)	/* nothing */
 #endif
