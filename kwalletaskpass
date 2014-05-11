@@ -1,5 +1,5 @@
 #!/usr/bin/env mksh
-# $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletaskpass,v 1.7 2014/05/11 16:01:17 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletaskpass,v 1.8 2014/05/11 16:02:39 tg Exp $
 #-
 # Copyright © 2009, 2010, 2011, 2014
 #	Thorsten Glaser <tg@mirbsd.org>
@@ -47,6 +47,7 @@ barg=
 [[ $1 = 'Allow shared connection to '* || \
    $1 = 'Terminate shared connection to '* || \
    $1 = 'Open '*' on '*'?' || \
+   $1 = 'Something behind the ssh-agent-filter '*'requested use of the key named '* || \
    $1 = 'Allow forward to '* || \
    $1 = 'Allow use of key '* ]] && barg=-b
 
