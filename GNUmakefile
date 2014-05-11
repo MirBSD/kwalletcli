@@ -1,4 +1,4 @@
-# $MirOS: contrib/hosted/tg/code/kwalletcli/GNUmakefile,v 1.11 2011/04/09 21:44:56 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/GNUmakefile,v 1.12 2014/05/11 16:43:39 tg Exp $
 #-
 # Copyright © 2009, 2011
 #	Thorsten Glaser <t.glaser@tarent.de>
@@ -75,7 +75,7 @@ clean:
 	-rm -f ${OBJS} ${PROG}
 
 ${PROG}: ${OBJS} ${DPADD}
-	${CXX} ${LDFLAGS} -o $@ ${OBJS} ${LDADD}
+	${CXX} ${CXXFLAGS} ${LDFLAGS} -o $@ ${OBJS} ${LDADD}
 
 .c.o:
 	${CC} ${CPPFLAGS} ${CFLAGS} -c -o $@ $<
