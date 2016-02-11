@@ -1,7 +1,7 @@
-.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.1,v 1.14 2011/04/09 21:44:56 tg Exp $
+.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.1,v 1.15 2016/02/11 20:12:12 tg Exp $
 .\"-
-.\" Copyright © 2009, 2010, 2011
-.\"	Thorsten Glaser <tg@mirbsd.org>
+.\" Copyright © 2009, 2010, 2011, 2016
+.\"	mirabilos <m@mirbsd.org>
 .\"
 .\" Provided that these terms and disclaimer and all copyright notices
 .\" are retained or reproduced in an accompanying document, permission
@@ -26,7 +26,28 @@
 .\" * ~ is size-reduced and placed atop in groff, so use \*(TI
 .\" * ^ is size-reduced and placed atop in groff, so use \*(ha
 .\" * \(en does not work in nroff, so use \*(en
+.\" * <>| are problematic, so redefine and use \*(Lt\*(Gt\*(Ba
+.\" Also make sure to use \& *before* a punctuation char that is to not
+.\" be interpreted as punctuation, and especially with two-letter words
+.\" but also (after) a period that does not end a sentence (“e.g.\&”).
+.\" The section after the "doc" macropackage has been loaded contains
+.\" additional code to convene between the UCB mdoc macropackage (and
+.\" its variant as BSD mdoc in groff) and the GNU mdoc macropackage.
+.\"
 .ie \n(.g \{\
+.	if \*[.T]ascii .tr \-\N'45'
+.	if \*[.T]latin1 .tr \-\N'45'
+.	if \*[.T]utf8 .tr \-\N'45'
+.	ds <= \[<=]
+.	ds >= \[>=]
+.	ds Rq \[rq]
+.	ds Lq \[lq]
+.	ds sL \(aq
+.	ds sR \(aq
+.	if \*[.T]utf8 .ds sL `
+.	if \*[.T]ps .ds sL `
+.	if \*[.T]utf8 .ds sR '
+.	if \*[.T]ps .ds sR '
 .	ds aq \(aq
 .	ds TI \(ti
 .	ds ha \(ha
@@ -38,7 +59,9 @@
 .	ds ha ^
 .	ds en \(em
 .\}
+.\"
 .\" Implement .Dd with the Mdocdate RCS keyword
+.\"
 .rn Dd xD
 .de Dd
 .ie \\$1$Mdocdate: \{\
@@ -46,8 +69,84 @@
 .\}
 .el .xD \\$1 \\$2 \\$3 \\$4 \\$5 \\$6 \\$7 \\$8
 ..
+.\"
+.\" .Dd must come before definition of .Mx, because when called
+.\" with -mandoc, it might implement .Mx itself, but we want to
+.\" use our own definition. And .Dd must come *first*, always.
+.\"
+.Dd $Mdocdate: February 11 2016 $
+.\"
+.\" Check which macro package we use, and do other -mdoc setup.
+.\"
+.ie \n(.g \{\
+.	if \*[.T]utf8 .tr \[la]\*(Lt
+.	if \*[.T]utf8 .tr \[ra]\*(Gt
+.	ie d volume-ds-1 .ds tT gnu
+.	el .ds tT bsd
+.\}
+.el .ds tT ucb
+.\"
+.\" Implement .Mx (MirBSD)
+.\"
+.ie "\*(tT"gnu" \{\
+.	eo
+.	de Mx
+.	nr curr-font \n[.f]
+.	nr curr-size \n[.ps]
+.	ds str-Mx \f[\n[curr-font]]\s[\n[curr-size]u]
+.	ds str-Mx1 \*[Tn-font-size]\%MirOS\*[str-Mx]
+.	if !\n[arg-limit] \
+.	if \n[.$] \{\
+.	ds macro-name Mx
+.	parse-args \$@
+.	\}
+.	if (\n[arg-limit] > \n[arg-ptr]) \{\
+.	nr arg-ptr +1
+.	ie (\n[type\n[arg-ptr]] == 2) \
+.	as str-Mx1 \~\*[arg\n[arg-ptr]]
+.	el \
+.	nr arg-ptr -1
+.	\}
+.	ds arg\n[arg-ptr] "\*[str-Mx1]
+.	nr type\n[arg-ptr] 2
+.	ds space\n[arg-ptr] "\*[space]
+.	nr num-args (\n[arg-limit] - \n[arg-ptr])
+.	nr arg-limit \n[arg-ptr]
+.	if \n[num-args] \
+.	parse-space-vector
+.	print-recursive
+..
+.	ec
+.	ds sP \s0
+.	ds tN \*[Tn-font-size]
+.\}
+.el \{\
+.	de Mx
+.	nr cF \\n(.f
+.	nr cZ \\n(.s
+.	ds aa \&\f\\n(cF\s\\n(cZ
+.	if \\n(aC==0 \{\
+.		ie \\n(.$==0 \&MirOS\\*(aa
+.		el .aV \\$1 \\$2 \\$3 \\$4 \\$5 \\$6 \\$7 \\$8 \\$9
+.	\}
+.	if \\n(aC>\\n(aP \{\
+.		nr aP \\n(aP+1
+.		ie \\n(C\\n(aP==2 \{\
+.			as b1 \&MirOS\ #\&\\*(A\\n(aP\\*(aa
+.			ie \\n(aC>\\n(aP \{\
+.				nr aP \\n(aP+1
+.				nR
+.			\}
+.			el .aZ
+.		\}
+.		el \{\
+.			as b1 \&MirOS\\*(aa
+.			nR
+.		\}
+.	\}
+..
+.\}
 .\"-
-.Dd $Mdocdate: April 9 2011 $
 .Dt KWALLETCLI 1
 .Os
 .Sh NAME
