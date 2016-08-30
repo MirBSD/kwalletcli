@@ -25,7 +25,8 @@
  */
 
 #include <qstring.h>
-#include <QtWidgets/QApplication>
+#include <QtWidgets/qdesktopwidget.h>
+#include <QtWidgets/qapplication.h>
 #include <klocalizedstring.h>
 #include <kaboutdata.h>
 #include <kwallet.h>
@@ -36,14 +37,7 @@ extern "C" char *getenv(const char *);
 extern "C" char *strdup(const char *);
 
 extern "C" const char __rcsid_kwif[] =
-    "$MirOS: contrib/hosted/tg/code/kwalletcli/kwif5.cc,v 1.1 2016/08/30 17:52:40 tg Exp $";
-
-static int faux_argc = 1;
-static char faux_argv0[] = "kwalletcli";
-static char **faux_argv[] = {
-	faux_argv0,
-	NULL
-};
+    "$MirOS: contrib/hosted/tg/code/kwalletcli/kwif5.cc,v 1.2 2016/08/30 19:33:51 tg Exp $";
 
 extern "C" int
 kw_io(const char *fld, const char *ent, const char **pwp, const char *vers)
@@ -66,12 +60,16 @@ kw_io(const char *fld, const char *ent, const char **pwp, const char *vers)
 		qpw = QString::fromUtf8(*pwp);
 
 	/* this is ridiculous */
+	int faux_argc = 1;
+	char faux_argv0[] = "kwalletcli";
+	char *faux_argv[] = { faux_argv0, NULL };
 	QApplication app(faux_argc, faux_argv);
 	KAboutData aboutData(faux_argv0, i18n("KWallet CLI"), vers);
 	KAboutData::setApplicationData(aboutData);
 
 	localwallet = KWallet::Wallet::LocalWallet();
-	wallet = KWallet::Wallet::openWallet(localwallet, 0);
+	wallet = KWallet::Wallet::openWallet(localwallet,
+	    QApplication::desktop()->screen()->winId());
 
 	if (!wallet) {
 		rv = KWE_NOWALLET;

@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2009, 2011, 2013
+ * Copyright (c) 2009, 2011, 2013, 2016
  *	mirabilos <m@mirbsd.org>
  *
  * Provided that these terms and disclaimer and all copyright notices
@@ -19,7 +19,7 @@
  */
 
 #ifndef KWALLETCLI_H
-#define KWALLETCLI_H	"$MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.h,v 1.8 2016/08/30 17:37:57 tg Exp $"
+#define KWALLETCLI_H	"$MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.h,v 1.9 2016/08/30 19:33:51 tg Exp $"
 
 
 #if defined(HAVE_ATTRIBUTE_BOUNDED) && HAVE_ATTRIBUTE_BOUNDED
@@ -38,7 +38,10 @@ extern "C" {
 
 extern const char __rcsid_kwif[];
 
-/* this function MUST NOT fail if stderr is closed */
+/*
+ * KDE Wallet I/O function; it MUST NOT fail if stderr is closed.
+ * It is called at most once per execution and may rely on that.
+ */
 int kw_io(const char *, const char *, const char **, const char *);
 
 

@@ -1,4 +1,4 @@
-# $MirOS: contrib/hosted/tg/code/kwalletcli/GNUmakefile,v 1.14 2016/08/30 17:52:40 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/GNUmakefile,v 1.15 2016/08/30 19:33:50 tg Exp $
 #-
 # Copyright © 2009, 2011, 2016
 #	mirabilos <m@mirbsd.org>
@@ -17,6 +17,9 @@
 # of dealing in the work, even if advised of the possibility of such
 # damage or existence of a defect, except proven that it results out
 # of said person’s immediate fault when using the work as intended.
+#-
+# Note: Qt5 builds may require fPIC in CFLAGS, CXXFLAGS, and LDFLAGS
+# (*not* CPPFLAGS!) to successfully build; PIE does not work.
 
 SCRIPTS=	kwalletaskpass kwalletcli_getpin pinentry-kwallet
 BINDIR?=	/usr/bin
@@ -44,8 +47,7 @@ OBJS+=		kwif4.o
 LDADD+=		-lkdeui -lkdecore -lQtCore
 else
 ifeq (${KDE_VER},5)
-KDE_INCS?=	-I/usr/include/qt \
-		-I/usr/include/qt/QtCore -I/usr/include/qt/QtGui \
+KDE_INCS?=	$(shell pkg-config --cflags Qt5Gui) -I/usr/include/KF5/KI18n \
 		-I/usr/include/KF5/KCoreAddons -I/usr/include/KF5/KWallet
 SRCS+=		kwif5.cc
 OBJS+=		kwif5.o

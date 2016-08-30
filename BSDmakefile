@@ -1,4 +1,4 @@
-# $MirOS: contrib/hosted/tg/code/kwalletcli/BSDmakefile,v 1.18 2016/08/30 17:52:40 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/BSDmakefile,v 1.19 2016/08/30 19:33:50 tg Exp $
 #-
 # Copyright © 2009, 2010, 2011, 2012, 2016
 #	mirabilos <m@mirbsd.org>
@@ -17,6 +17,9 @@
 # of dealing in the work, even if advised of the possibility of such
 # damage or existence of a defect, except proven that it results out
 # of said person’s immediate fault when using the work as intended.
+#-
+# Note: Qt5 builds may require fPIC in CFLAGS, CXXFLAGS, and LDFLAGS
+# (*not* CPPFLAGS!) to successfully build; PIE does not work.
 
 PROG=		kwalletcli
 SRCS=		charconv.c main.c
@@ -34,8 +37,10 @@ KDE_INCS?=	-I/usr/include/qt4 -I/usr/include/qt4/QtCore
 SRCS+=		kwif4.cc
 LDADD+=		-lkdeui -lkdecore -lQtCore
 .elif ${KDE_VER} == 5
-KDE_INCS?=	-I/usr/include/qt \
-		-I/usr/include/qt/QtCore -I/usr/include/qt/QtGui \
+.  ifndef KDE_INCS
+QT5_INCS!=	pkg-config --cflags Qt5Gui
+.  endif
+KDE_INCS?=	${QT5_INCS} -I/usr/include/KF5/KI18n \
 		-I/usr/include/KF5/KCoreAddons -I/usr/include/KF5/KWallet
 SRCS+=		kwif5.cc
 LDADD+=		-lKF5CoreAddons -lKF5Wallet -lKF5I18n -lQt5Core -lQt5Widgets
