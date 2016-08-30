@@ -1,6 +1,6 @@
-# $MirOS: contrib/hosted/tg/code/kwalletcli/BSDmakefile,v 1.17 2016/08/30 17:37:56 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/BSDmakefile,v 1.18 2016/08/30 17:52:40 tg Exp $
 #-
-# Copyright © 2009, 2010, 2011, 2012
+# Copyright © 2009, 2010, 2011, 2012, 2016
 #	mirabilos <m@mirbsd.org>
 #
 # Provided that these terms and disclaimer and all copyright notices
@@ -33,8 +33,14 @@ LDADD+=		-lkwalletclient -lkdecore -lqt-mt
 KDE_INCS?=	-I/usr/include/qt4 -I/usr/include/qt4/QtCore
 SRCS+=		kwif4.cc
 LDADD+=		-lkdeui -lkdecore -lQtCore
+.elif ${KDE_VER} == 5
+KDE_INCS?=	-I/usr/include/qt \
+		-I/usr/include/qt/QtCore -I/usr/include/qt/QtGui \
+		-I/usr/include/KF5/KCoreAddons -I/usr/include/KF5/KWallet
+SRCS+=		kwif5.cc
+LDADD+=		-lKF5CoreAddons -lKF5Wallet -lKF5I18n -lQt5Core -lQt5Widgets
 .else
-.  error unknown KDE_VER; valid: 3 4
+.  error unknown KDE_VER; valid: 3 4 5
 .endif
 
 CPPFLAGS+=	${KDE_INCS} -D_GNU_SOURCE

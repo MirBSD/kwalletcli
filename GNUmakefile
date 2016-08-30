@@ -1,6 +1,6 @@
-# $MirOS: contrib/hosted/tg/code/kwalletcli/GNUmakefile,v 1.13 2016/08/30 17:37:56 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/GNUmakefile,v 1.14 2016/08/30 17:52:40 tg Exp $
 #-
-# Copyright © 2009, 2011
+# Copyright © 2009, 2011, 2016
 #	mirabilos <m@mirbsd.org>
 #
 # Provided that these terms and disclaimer and all copyright notices
@@ -43,7 +43,16 @@ SRCS+=		kwif4.cc
 OBJS+=		kwif4.o
 LDADD+=		-lkdeui -lkdecore -lQtCore
 else
+ifeq (${KDE_VER},5)
+KDE_INCS?=	-I/usr/include/qt \
+		-I/usr/include/qt/QtCore -I/usr/include/qt/QtGui \
+		-I/usr/include/KF5/KCoreAddons -I/usr/include/KF5/KWallet
+SRCS+=		kwif5.cc
+OBJS+=		kwif5.o
+LDADD+=		-lKF5CoreAddons -lKF5Wallet -lKF5I18n -lQt5Core -lQt5Widgets
+else
 $(error unknown KDE_VER)
+endif
 endif
 endif
 
