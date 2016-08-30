@@ -1,6 +1,6 @@
 /*-
  * Copyright (c) 2009, 2011, 2013
- *	Thorsten Glaser <tg@mirbsd.org>
+ *	mirabilos <m@mirbsd.org>
  *
  * Provided that these terms and disclaimer and all copyright notices
  * are retained or reproduced in an accompanying document, permission
@@ -19,7 +19,7 @@
  */
 
 #ifndef KWALLETCLI_H
-#define KWALLETCLI_H	"$MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.h,v 1.7 2013/10/31 20:05:50 tg Exp $"
+#define KWALLETCLI_H	"$MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.h,v 1.8 2016/08/30 17:37:57 tg Exp $"
 
 
 #if defined(HAVE_ATTRIBUTE_BOUNDED) && HAVE_ATTRIBUTE_BOUNDED

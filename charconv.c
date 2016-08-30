@@ -1,6 +1,6 @@
 /*-
  * Copyright © 2011
- *	Thorsten Glaser <tg@mirbsd.org>
+ *	mirabilos <m@mirbsd.org>
  *
  * Provided that these terms and disclaimer and all copyright notices
  * are retained or reproduced in an accompanying document, permission
@@ -23,7 +23,7 @@
 #include "kwalletcli.h"
 
 const char __rcsid_charconv_c[] =
-    "$MirOS: contrib/hosted/tg/code/kwalletcli/charconv.c,v 1.3 2011/04/09 22:33:49 tg Exp $";
+    "$MirOS: contrib/hosted/tg/code/kwalletcli/charconv.c,v 1.4 2016/08/30 17:37:56 tg Exp $";
 
 /* From MirOS: contrib/hosted/tg/code/any2utf8/wide.c,v 1.1 2009/08/02 17:12:07 tg Exp */
 

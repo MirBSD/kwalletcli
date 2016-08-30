@@ -1,6 +1,6 @@
 /*-
  * Copyright © 2009, 2010
- *	Thorsten Glaser <t.glaser@tarent.de>
+ *	mirabilos <m@mirbsd.org>
  * Copyright © 2009
  *	Thomas Fischer <fischer@unix-ag.uni-kl.de>
  *
@@ -34,7 +34,7 @@ extern "C" char *getenv(const char *);
 extern "C" char *strdup(const char *);
 
 extern "C" const char __rcsid_kwif[] =
-    "$MirOS: contrib/hosted/tg/code/kwalletcli/kwif4.cc,v 1.2 2010/01/11 15:34:31 tg Exp $";
+    "$MirOS: contrib/hosted/tg/code/kwalletcli/kwif4.cc,v 1.3 2016/08/30 17:37:58 tg Exp $";
 
 extern "C" int
 kw_io(const char *fld, const char *ent, const char **pwp, const char *vers)

@@ -1,7 +1,7 @@
-# $MirOS: contrib/hosted/tg/code/kwalletcli/GNUmakefile,v 1.12 2014/05/11 16:43:39 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/GNUmakefile,v 1.13 2016/08/30 17:37:56 tg Exp $
 #-
 # Copyright © 2009, 2011
-#	Thorsten Glaser <t.glaser@tarent.de>
+#	mirabilos <m@mirbsd.org>
 #
 # Provided that these terms and disclaimer and all copyright notices
 # are retained or reproduced in an accompanying document, permission

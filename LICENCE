@@ -8,7 +8,7 @@ under the following Terms and Conditions:
 kwalletcli is covered by The MirOS Licence:
 
 Copyright © 2009, 2010, 2011, 2014
-	Thorsten “mirabilos” Glaser <t.glaser@tarent.de>
+	mirabilos <m@mirbsd.org>
 KDE 4 bindings Copyright © 2009
 	Thomas Fischer <fischer@unix-ag.uni-kl.de>
 
@@ -33,7 +33,7 @@ part of the logo for The MirBSD Korn Shell and covered by the same
 licence as mksh itself (The MirOS Licence, see above):
 
   Copyright © 2008, 2009 Lukas U. <smultron@midnightbsd.org>
-  Copyright © 2008 Thorsten „mirabilos“ Glaser <tg@mirbsd.org>
+  Copyright © 2008 mirabilos <m@mirbsd.org>
 
 It is also a derivate of The Oxygen Icon Theme by <kde-artists@kde.org>:
 
@@ -71,13 +71,14 @@ The exception in section 5 of the GNU Lesser General Public License
 covers the use of elements of this art library in a GUI.
 
 
-The following people, in no particular order, have also contributed
+The following persons, in no particular order, have also contributed
 to kwalletcli, in one way or the other:
 
+• tarent solutions GmbH
 • Daniel Schaal <farbing@web.de>
 • Felix Geyer <debfx@ubuntu.com>
 • pinotree (via IRC)
 • Timo Weingärtner <timo@tiwe.de>
 
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲
-$MirOS: contrib/hosted/tg/code/kwalletcli/LICENCE,v 1.5 2014/05/11 16:11:51 tg Exp $
+$MirOS: contrib/hosted/tg/code/kwalletcli/LICENCE,v 1.6 2016/08/30 17:37:56 tg Exp $

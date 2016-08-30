@@ -1,8 +1,8 @@
 #!/usr/bin/env mksh
-# $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin,v 1.21 2011/05/10 09:05:17 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin,v 1.22 2016/08/30 17:37:58 tg Exp $
 #-
 # Copyright © 2009, 2010, 2011
-#	Thorsten Glaser <t.glaser@tarent.de>
+#	mirabilos <m@mirbsd.org>
 #
 # Provided that these terms and disclaimer and all copyright notices
 # are retained or reproduced in an accompanying document, permission

@@ -1,7 +1,7 @@
-# $MirOS: contrib/hosted/tg/code/kwalletcli/BSDmakefile,v 1.16 2012/12/15 20:41:35 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/BSDmakefile,v 1.17 2016/08/30 17:37:56 tg Exp $
 #-
 # Copyright © 2009, 2010, 2011, 2012
-#	Thorsten Glaser <tg@mirbsd.org>
+#	mirabilos <m@mirbsd.org>
 #
 # Provided that these terms and disclaimer and all copyright notices
 # are retained or reproduced in an accompanying document, permission

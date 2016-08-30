@@ -1,6 +1,6 @@
 /*-
  * Copyright © 2009, 2011
- *	Thorsten Glaser <t.glaser@tarent.de>
+ *	mirabilos <m@mirbsd.org>
  *
  * Provided that these terms and disclaimer and all copyright notices
  * are retained or reproduced in an accompanying document, permission
@@ -27,7 +27,7 @@
 #include "kwalletcli.h"
 
 const char __rcsid_main_c[] =
-    "$MirOS: contrib/hosted/tg/code/kwalletcli/main.c,v 1.10 2011/04/09 22:24:32 tg Exp $";
+    "$MirOS: contrib/hosted/tg/code/kwalletcli/main.c,v 1.11 2016/08/30 17:37:58 tg Exp $";
 
 #define WOCTET_MASK	(0x7FFFFF80)
 #define WOCTET_VALUE	(0x0000EF80)
