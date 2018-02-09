@@ -7,7 +7,7 @@ under the following Terms and Conditions:
 
 kwalletcli is covered by The MirOS Licence:
 
-Copyright © 2009, 2010, 2011, 2014, 2016
+Copyright © 2009, 2010, 2011, 2014, 2016, 2018
 	mirabilos <m@mirbsd.org>
 KDE 4 bindings Copyright © 2009
 	Thomas Fischer <fischer@unix-ag.uni-kl.de>
@@ -81,6 +81,7 @@ to kwalletcli, in one way or the other:
 • Felix Geyer <debfx@ubuntu.com>
 • pinotree (via IRC)
 • Timo Weingärtner <timo@tiwe.de>
+• Tomas Pospisek <tpo_deb@sourcepole.ch>
 
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲
-$MirOS: contrib/hosted/tg/code/kwalletcli/LICENCE,v 1.7 2016/08/30 17:52:40 tg Exp $
+$MirOS: contrib/hosted/tg/code/kwalletcli/LICENCE,v 1.8 2018/02/09 16:59:54 tg Exp $
