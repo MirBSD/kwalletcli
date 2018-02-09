@@ -1,6 +1,6 @@
-.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.1,v 1.17 2016/08/30 18:26:44 tg Exp $
+.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli.1,v 1.18 2018/02/09 16:33:43 tg Exp $
 .\"-
-.\" Copyright © 2009, 2010, 2011, 2016
+.\" Copyright © 2009, 2010, 2011, 2016, 2018
 .\"	mirabilos <m@mirbsd.org>
 .\"
 .\" Provided that these terms and disclaimer and all copyright notices
@@ -74,7 +74,7 @@
 .\" with -mandoc, it might implement .Mx itself, but we want to
 .\" use our own definition. And .Dd must come *first*, always.
 .\"
-.Dd $Mdocdate: August 30 2016 $
+.Dd $Mdocdate: February 9 2018 $
 .\"
 .\" Check which macro package we use, and do other -mdoc setup.
 .\"
@@ -167,7 +167,7 @@ The
 utility is a command line interface to KWallet.
 It will only work if KDE is running (DCOP) and reachable (via X11).
 .Nm
-can be used to get password entries from the Wallet,
+can be used to get password entries from the default Wallet,
 or to write them there.
 .Pp
 The options are as follows:
@@ -206,9 +206,11 @@ Default mode of operation, that is, unless
 .Fl P
 or
 .Fl p
-are used, is to read the password from the Wallet
+are used, is to read the password from the default Wallet
 and print it to standard output as-is, without any
 trailing newline.
+.Pp
+There is currently no way to specify a Wallet other than the default.
 .Pp
 All input and output is assumed to be in UTF-8.
 The password string (whether read from standard input or command line)
@@ -249,6 +251,19 @@ KWallet should not be used any more during the current session.
 .It Ev DISPLAY
 The X11 display to use for communicating with the KDE Wallet.
 .El
+.Sh EXAMPLES
+The following command...
+.Pp
+.Dl "$ printf \*(aq%s\en\*(aq" \&"secret\&" "\*(Ba kwalletcli \-f passwords \-e sitename \-P"
+.Pp
+\&... stores the password
+.Dq secret
+as
+.Li passwords\esitename
+inside the default Wallet.
+To read it out, use:
+.Pp
+.Dl $ password=$(kwalletcli \-f passwords \-e sitename)
 .Sh SEE ALSO
 .Xr kwalletcli_getpin 1
 .Sh AUTHORS
@@ -283,11 +298,3 @@ cannot start for other reasons,
 may not recover gracefully.
 In KDE 4 versions, this may even result in a Segmentation fault.
 The author does not know of a way to catch this early; patches are welcome.
-.Pp
-There is no way (yet) to set a wallet other than the default wallet.
-While this is a possible enhancement to the
-.Nm
-CLI, there is no feasible way to expose this functionality to the
-various front-ends, such as
-.Xr pinentry\-kwallet 1 ,
-anyway, so the priority of fixing this is low.
