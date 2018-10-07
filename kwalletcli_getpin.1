@@ -1,4 +1,4 @@
-.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin.1,v 1.18 2016/08/30 17:37:58 tg Exp $
+.\" $MirOS: contrib/hosted/tg/code/kwalletcli/kwalletcli_getpin.1,v 1.19 2018/10/07 01:10:17 tg Exp $
 .\"-
 .\" Copyright © 2009, 2011, 2016
 .\"	mirabilos <m@mirbsd.org>
@@ -74,7 +74,7 @@
 .\" with -mandoc, it might implement .Mx itself, but we want to
 .\" use our own definition. And .Dd must come *first*, always.
 .\"
-.Dd $Mdocdate: August 30 2016 $
+.Dd $Mdocdate: October 7 2018 $
 .\"
 .\" Check which macro package we use, and do other -mdoc setup.
 .\"
@@ -173,7 +173,7 @@ There are options for asking a boolean question or displaying a message.
 .Pp
 If
 .Ev PINENTRY
-is not empty but points to a non-existing or failing programme,
+is not empty but points to a non-existing or failing program,
 .Nm pinentry
 is not called.
 Instead,
@@ -284,7 +284,7 @@ Unset by default.
 .It Ev PINENTRY
 The
 .Nm pinentry
-programme to use.
+program to use.
 Default:
 .Dq pinentry
 .El
@@ -306,7 +306,7 @@ or setting the window title, are not supported yet.
 .Sh BUGS
 Some
 .Nm pinentry
-programmes may not support messages correctly and display
+programs may not support messages correctly and display
 them as boolean queries instead.
 .Pp
 Some implementations display labels with the wrong charset.
