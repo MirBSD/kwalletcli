@@ -219,11 +219,12 @@ function getit {
 		io_s_out GETPIN
 		io_s_in resp
 		pw=
-		#XXX normally, read until OK|ERR
-		if [[ $resp = @(D )* ]]; then
-			pw=${resp#D }
-			io_s_in resp
-		fi
+		while [[ $resp != @(OK|ERR)@(| *) ]]; do
+		    if [[ $resp = @(D )* ]]; then
+			    pw=${resp#D }
+		    fi
+            io_s_in resp
+        done
 		[[ $resp = OK@(| *) ]] && tw=1
 	fi
 	(( tw && !blst )) && if kwalletcli_getpin -q -b \
