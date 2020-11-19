@@ -1,6 +1,6 @@
-# $MirOS: contrib/hosted/tg/code/kwalletcli/BSDmakefile,v 1.19 2016/08/30 19:33:50 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/BSDmakefile,v 1.20 2020/11/19 21:37:09 tg Exp $
 #-
-# Copyright © 2009, 2010, 2011, 2012, 2016
+# Copyright © 2009, 2010, 2011, 2012, 2016, 2020
 #	mirabilos <m@mirbsd.org>
 #
 # Provided that these terms and disclaimer and all copyright notices
@@ -27,6 +27,8 @@ SCRIPTS=	kwalletaskpass kwalletcli_getpin pinentry-kwallet
 MAN=		${PROG}.1 ${SCRIPTS:=.1}
 BINDIR?=	${BSD_PREFIX}/bin
 
+PKG_CONFIG?=	pkg-config
+
 KDE_VER?=	3
 .if ${KDE_VER} == 3
 KDE_INCS?=	-I/usr/include/qt3 -I/usr/include/kde
@@ -38,10 +40,11 @@ SRCS+=		kwif4.cc
 LDADD+=		-lkdeui -lkdecore -lQtCore
 .elif ${KDE_VER} == 5
 .  ifndef KDE_INCS
-QT5_INCS!=	pkg-config --cflags Qt5Gui
+QT5_INCS!=	${PKG_CONFIG} --cflags Qt5Gui
 .  endif
 KDE_INCS?=	${QT5_INCS} -I/usr/include/KF5/KI18n \
-		-I/usr/include/KF5/KCoreAddons -I/usr/include/KF5/KWallet
+		-I/usr/include/KF5/KCoreAddons \
+		-I/usr/include/KF5/KWallet
 SRCS+=		kwif5.cc
 LDADD+=		-lKF5CoreAddons -lKF5Wallet -lKF5I18n -lQt5Core -lQt5Widgets
 .else

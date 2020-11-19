@@ -1,6 +1,6 @@
-# $MirOS: contrib/hosted/tg/code/kwalletcli/GNUmakefile,v 1.15 2016/08/30 19:33:50 tg Exp $
+# $MirOS: contrib/hosted/tg/code/kwalletcli/GNUmakefile,v 1.16 2020/11/19 21:37:10 tg Exp $
 #-
-# Copyright © 2009, 2011, 2016
+# Copyright © 2009, 2011, 2016, 2020
 #	mirabilos <m@mirbsd.org>
 #
 # Provided that these terms and disclaimer and all copyright notices
@@ -33,6 +33,8 @@ PROG=		kwalletcli
 SRCS=		charconv.c main.c
 OBJS=		charconv.o main.o
 
+PKG_CONFIG?=	pkg-config
+
 KDE_VER:=	3
 ifeq (${KDE_VER},3)
 KDE_INCS?=	-I/usr/include/qt3 -I/usr/include/kde
@@ -47,8 +49,10 @@ OBJS+=		kwif4.o
 LDADD+=		-lkdeui -lkdecore -lQtCore
 else
 ifeq (${KDE_VER},5)
-KDE_INCS?=	$(shell pkg-config --cflags Qt5Gui) -I/usr/include/KF5/KI18n \
-		-I/usr/include/KF5/KCoreAddons -I/usr/include/KF5/KWallet
+KDE_INCS?=	$(shell ${PKG_CONFIG} --cflags Qt5Gui) \
+		-I/usr/include/KF5/KI18n \
+		-I/usr/include/KF5/KCoreAddons \
+		-I/usr/include/KF5/KWallet
 SRCS+=		kwif5.cc
 OBJS+=		kwif5.o
 LDADD+=		-lKF5CoreAddons -lKF5Wallet -lKF5I18n -lQt5Core -lQt5Widgets
