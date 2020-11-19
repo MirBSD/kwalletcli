@@ -27,7 +27,7 @@
 #include "kwalletcli.h"
 
 const char __rcsid_main_c[] =
-    "$MirOS: contrib/hosted/tg/code/kwalletcli/main.c,v 1.11 2016/08/30 17:37:58 tg Exp $";
+    "$MirOS: contrib/hosted/tg/code/kwalletcli/main.c,v 1.12 2020/11/19 23:10:47 tg Exp $";
 
 #define WOCTET_MASK	(0x7FFFFF80)
 #define WOCTET_VALUE	(0x0000EF80)
@@ -189,6 +189,7 @@ main(int argc, char *argv[])
 	case KWE_ABORT:
 		if (!quiet)
 			fprintf(stderr, "internal error\n");
+		/* FALLTHROUGH */
 	default:
 		fflush(NULL);
 		abort();
