@@ -1,4 +1,4 @@
-kwalletcli – Command-Line Interface for the KDE Wallet
+kwalletcli — Command-Line Interface for the KDE Wallet
 ──────────────────────────────────────────────────────
 
 kwalletcli is “OSI Certified Open Source Software” and distributed
@@ -7,7 +7,7 @@ under the following Terms and Conditions:
 
 kwalletcli is covered by The MirOS Licence:
 
-Copyright © 2009, 2010, 2011, 2014, 2016, 2018
+Copyright © 2009, 2010, 2011, 2014, 2016, 2018, 2020
 	mirabilos <m@mirbsd.org>
 KDE 4 bindings Copyright © 2009
 	Thomas Fischer <fischer@unix-ag.uni-kl.de>
@@ -76,12 +76,13 @@ covers the use of elements of this art library in a GUI.
 The following persons, in no particular order, have also contributed
 to kwalletcli, in one way or the other:
 
-• tarent solutions GmbH
+• ⮡ tarent solutions GmbH
 • Daniel Schaal <farbing@web.de>
 • Felix Geyer <debfx@ubuntu.com>
 • pinotree (via IRC)
 • Timo Weingärtner <timo@tiwe.de>
 • Tomas Pospisek <tpo_deb@sourcepole.ch>
+• Helmut Grohne <helmut@subdivi.de>
 
  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲
-$MirOS: contrib/hosted/tg/code/kwalletcli/LICENCE,v 1.8 2018/02/09 16:59:54 tg Exp $
+$MirOS: contrib/hosted/tg/code/kwalletcli/LICENCE,v 1.9 2021/01/25 13:41:58 tg Exp $
