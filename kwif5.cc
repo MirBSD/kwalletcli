@@ -37,7 +37,7 @@ extern "C" char *getenv(const char *);
 extern "C" char *strdup(const char *);
 
 extern "C" const char __rcsid_kwif[] =
-    "$MirOS: contrib/hosted/tg/code/kwalletcli/kwif5.cc,v 1.3 2021/01/25 13:41:51 tg Exp $";
+    "$MirOS: contrib/hosted/tg/code/kwalletcli/kwif5.cc,v 1.4 2021/03/21 21:57:27 tg Exp $";
 
 extern "C" int
 kw_io(const char *fld, const char *ent, const char **pwp, const char *vers)
@@ -70,6 +70,7 @@ kw_io(const char *fld, const char *ent, const char **pwp, const char *vers)
 	localwallet = KWallet::Wallet::LocalWallet();
 	wallet = KWallet::Wallet::openWallet(localwallet,
 	    /* https://lists.qt-project.org/pipermail/interest/2020-November/035993.html */
+	    /* https://lists.qt-project.org/pipermail/interest/2021-March/036467.html */
 	    QApplication::desktop()->screen()->winId());
 
 	if (!wallet) {
